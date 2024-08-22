@@ -1,0 +1,44 @@
+.senha-ion-input-custom {
+  border-width: 0;
+  border-radius: 20px;
+  width: 75%;
+  max-width: 400px;
+  max-height: 50px;
+  height: 50px; 
+  color: black;
+  background-color: aliceblue;
+  padding: 100px; 
+  margin-bottom: 10px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.button-ion-input-custom{
+  --border-width: 0;
+  --border-radius: 0;
+  height: auto;
+  width: 75%;
+  max-width: 400px; 
+}
+
+.confirm {
+  padding: 10px;
+  width: 100%;
+  height: 60px; 
+}
+
+.register-container {
+  background-image: url('https://i.ibb.co/K5XFtyh/505d6122a604e48c2e8e41a37aa75b75.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px; 
+  }
+  
+  
