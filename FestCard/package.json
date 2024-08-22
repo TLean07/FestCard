@@ -1,5 +1,5 @@
 {
-  "name": "ionic-react-banking-ui",
+  "name": "festcard",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -70,5 +70,5 @@
   "devDependencies": {
     "@capacitor/cli": "^6.1.2"
   },
-  "description": "An Ionic project"
+  "description": "festcard"
 }
