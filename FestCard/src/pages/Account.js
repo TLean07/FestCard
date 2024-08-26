@@ -36,7 +36,7 @@ const Account = () => {
 		try {
 			await signOut(auth);
 			history.push('/login');
-			window.location.reload(); // Força a recarga da página
+			window.location.reload(); 
 		} catch (error) {
 			console.error('Erro ao deslogar:', error);
 		}

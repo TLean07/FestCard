@@ -3,7 +3,7 @@ import { IonContent, IonInput, IonButton, IonText, IonIcon } from '@ionic/react'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../data/firebase-config';
 import { useHistory } from 'react-router-dom'; 
-import { personOutline, lockClosedOutline } from 'ionicons/icons';
+import { personOutline, lockClosedOutline, arrowBackOutline } from 'ionicons/icons';
 import '../Css/Registrar.css';
 
 const Registrar = () => {
@@ -36,6 +36,14 @@ const Registrar = () => {
 
   return (
     <IonContent className="register-content">
+    <div className='register-page'>
+      <div className="return-to-login">
+        {}
+        <IonButton fill="clear" onClick={() => history.push('/login')}>
+          <IonIcon icon={arrowBackOutline} slot="start" />
+          Voltar para Login
+        </IonButton>
+      </div>
       <div className="register-container">
         <IonInput
           type="text"
@@ -86,6 +94,7 @@ const Registrar = () => {
         >
           Registrar
         </IonButton>
+      </div>
       </div>
     </IonContent>
   );

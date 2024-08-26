@@ -43,4 +43,12 @@
   
   .register-button {
     display: flex;
+
   }
+
+  .return-to-login {
+    flex-direction: column;
+    justify-content: right;
+    align-items: center;
+  }
+
