@@ -41,4 +41,6 @@
   padding: 20px; 
   }
   
-  
+  .register-button {
+    display: flex;
+  }

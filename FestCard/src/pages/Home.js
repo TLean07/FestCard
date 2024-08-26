@@ -4,11 +4,8 @@ import styles from "./Home.module.css";
 import { AccountStore } from '../data/AccountStore';
 import CardSlide from '../components/CardSlide';
 import { searchOutline } from 'ionicons/icons';
-
-// Import Swiper React components
+import './Home.module.css'
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
 import 'swiper/swiper.scss';
 
 const Home = () => {
@@ -16,8 +13,8 @@ const Home = () => {
   	const cards = AccountStore.useState(s => s.cards);
 	const profile = AccountStore.useState(s => s.profile);
 
-	const [ pageTitle, setPageTitle ] = useState(cards[0].description);
-	const [ mainColor, setMainColor ] = useState(cards[0].color);
+	const [ pageTitle, setPageTitle ] = useState('');
+	const [ mainColor, setMainColor ] = useState('');
 	const [ slideSpace, setSlideSpace ] = useState(10);
 
 	const slidesRef = useRef();

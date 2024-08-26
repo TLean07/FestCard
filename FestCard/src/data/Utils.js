@@ -1,11 +1,9 @@
 export const formatBalance = balance => {
+    var formatter = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 2
+    });
 
-	var formatter = new Intl.NumberFormat('en-GB', {
-		
-		// style: 'currency',
-		currency: 'GBP',
-		minimumFractionDigits: 2
-	});
-
-	return formatter.format(balance);
+    return formatter.format(balance);
 }

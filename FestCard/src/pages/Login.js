@@ -90,7 +90,7 @@ const Login = () => {
             className="register-button"
             onClick={handleRegister}
           >
-            Não tem uma conta? Registrar
+          Não tem uma conta? Registrar
           </IonButton>
         </div>
       </div>

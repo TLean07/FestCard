@@ -52,7 +52,7 @@ const TransactionItem = props => {
                 <IonLabel className={ `ion-text-wrap ${ styles.transactionContent }` }>
                     <h4 className={ deposit ? styles.green : styles.red }>
                         { deposit ? "+" : "-"}
-                        &pound;{ formatBalance(amount) }
+                        { formatBalance(amount) }
                     </h4>
                 </IonLabel>
             </div>
