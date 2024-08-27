@@ -28,8 +28,7 @@ const Registrar = () => {
       
       const credential = await createUserWithEmailAndPassword(auth, email, password);
       console.log('Usuário registrado:', credential.user);
-      
-      // Atualizar o nome do perfil
+ 
       const nameParts = username.split(" ");
       const firstname = nameParts[0];
       const surname = nameParts.slice(1).join(" ");
@@ -51,6 +50,8 @@ const Registrar = () => {
             Voltar para Login
           </IonButton>
         </div>
+        <img src="/icon.png" alt="Logo" className="register-logo" />
+        <h1 className="register-title">Registrar</h1>
         <div className="register-container">
           <IonInput
             type="text"
@@ -96,7 +97,6 @@ const Registrar = () => {
           <IonButton 
             expand="block" 
             className="confirm"
-            style={{ '--background': '#fafafa', '--color': '#131313' }}
             onClick={handleRegister}
           >
             Registrar

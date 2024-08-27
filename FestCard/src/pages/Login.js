@@ -53,54 +53,57 @@ const Login = () => {
 
   return (
     <IonContent className="login-content">
-      <div className="login-container">
-        <IonInput
-          type="email"
-          placeholder="Email"
-          className="senha-ion-input-custom"
-          clearInput
-          autocomplete="username"
-          value={email}
-          onIonInput={(e) => setEmail(e.target.value)}
-        >
-          <IonIcon icon={personOutline} slot="start" />
-        </IonInput>
-        <IonInput
-          type="password"
-          placeholder="Senha"
-          className="senha-ion-input-custom"
-          clearInput
-          autocomplete="current-password"
-          value={password}
-          onIonInput={(e) => setPassword(e.target.value)}
-        >
-          <IonIcon icon={lockClosedOutline} slot="start"/>
-        </IonInput>
-        <div className="button-ion-input-custom">
-          <IonButton
-            expand="block"
-            className="confirm"
-            style={{ '--background': '#fafafa', '--color': '#131313' }}
-            onClick={handleEmailLogin}
+      <div className="login-page">
+        <img src="/icon.png" alt="Logo" className="login-logo" />
+        <h1 className="login-title">Login</h1>
+        <div className="login-container">
+          <IonInput
+            type="email"
+            placeholder="Email"
+            className="senha-ion-input-custom"
+            clearInput
+            autocomplete="username"
+            value={email}
+            onIonInput={(e) => setEmail(e.target.value)}
           >
-            Confirmar
-          </IonButton>
-          <IonButton 
-            expand="block" 
-            className="confirm"
-            style={{ '--background': '#fafafa', '--color': '#131313', '--border': 'none' }}
-            onClick={handleGoogleLogin}
+            <IonIcon icon={personOutline} slot="start" />
+          </IonInput>
+          <IonInput
+            type="password"
+            placeholder="Senha"
+            className="senha-ion-input-custom"
+            clearInput
+            autocomplete="current-password"
+            value={password}
+            onIonInput={(e) => setPassword(e.target.value)}
           >
-            Entrar com Google
-          </IonButton>
-          <IonButton 
-            size="small" 
-            fill="clear" 
-            className="register-button"
-            onClick={handleRegister}
-          >
-          Não tem uma conta? Registrar
-          </IonButton>
+            <IonIcon icon={lockClosedOutline} slot="start"/>
+          </IonInput>
+          <div className="button-ion-input-custom">
+            <IonButton
+              expand="block"
+              className="confirm"
+              onClick={handleEmailLogin}
+            >
+              Confirmar
+            </IonButton>
+            <IonButton 
+              expand="block" 
+              className="confirm"
+              onClick={handleGoogleLogin}
+            >
+            <ion-icon name="logo-google"></ion-icon>  
+              Entrar com Google
+            </IonButton>
+            <IonButton 
+              size="small" 
+              fill="clear" 
+              className="register-button"
+              onClick={handleRegister}
+            >
+            Não tem uma conta? Registrar
+            </IonButton>
+          </div>
         </div>
       </div>
       <IonToast
