@@ -20,7 +20,7 @@ const DebitCard = props => {
 			<div className={ `${ styles.card__front } ${ styles.card__part } ${ styles[cardClass] }` }>
 
 				<img className={ `${ styles.card__front_chip } ${ styles.card__square }` } src="/chip.png" alt="1" />
-				<img className={ `${ styles.card__front_square } ${ styles.card__square }` } src="/ionicwhite.png" alt="1" />
+				<img className={ `${ styles.card__front_square } ${ styles.card__square }` } src="/icon3.png" alt="1" />
 				<img className={ `${ styles.card__front_logo } ${ styles.card__logo }` } src={ cardTypeLogo } alt="2" />
 				<p className={ styles.card_number }>**** **** **** { lastFourCardNumbers }</p>
 				<div className={ styles.card__space_75 }>
@@ -40,7 +40,7 @@ const DebitCard = props => {
 						<p className={ styles.card__secret__last }>{ secret }</p>
 					</div>
 
-					<img className={ `${ styles.card__back_square } ${ styles.card__square }` } src="/ionicwhite.png" alt="3" />
+					<img className={ `${ styles.card__back_square } ${ styles.card__square }` } src="/icon3.png" alt="3" />
 					<img className={ `${ styles.card__back_logo } ${ styles.card__logo }` } src={ cardTypeLogo } alt="5" />
 				</div>
 			</div>

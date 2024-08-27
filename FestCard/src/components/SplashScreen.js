@@ -8,7 +8,7 @@ const SplashScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       history.push('/login');
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(timer); 
   }, [history]);
@@ -16,10 +16,13 @@ const SplashScreen = () => {
   return (
     <div className="splash-screen">
       <img
-        src="https://i.ibb.co/f8k4TCF/logo.png"
+        src="/icon.png"
         alt="Logo"
         className="logo"
       />
+      <div className='letra' data-text="FESTCARD">
+      <p>FESTCARD</p>
+      </div>
     </div>
   );
 };
