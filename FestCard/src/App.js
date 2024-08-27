@@ -8,6 +8,7 @@ import AddCard from './pages/AddCard';
 import Login from './pages/Login';
 import Registrar from './pages/Registrar';
 import SplashScreen from './components/SplashScreen';
+import SetUsername from './pages/SetUsername';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -62,6 +63,10 @@ const App = () => (
 
 				<Route path="/registrar" exact={true}>
 					<Registrar />
+				</Route>
+
+				<Route path="/set-username" exact={true}>
+					<SetUsername	 />
 				</Route>
 
 			</IonRouterOutlet>

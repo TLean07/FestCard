@@ -5,6 +5,7 @@ import { auth } from '../data/firebase-config';
 import { useHistory } from 'react-router-dom'; 
 import { personOutline, lockClosedOutline, arrowBackOutline } from 'ionicons/icons';
 import '../Css/Registrar.css';
+import { updateProfileName } from '../data/AccountStore';
 
 const Registrar = () => {
   const [username, setUsername] = useState('');
@@ -27,6 +28,13 @@ const Registrar = () => {
       
       const credential = await createUserWithEmailAndPassword(auth, email, password);
       console.log('Usuário registrado:', credential.user);
+      
+      // Atualizar o nome do perfil
+      const nameParts = username.split(" ");
+      const firstname = nameParts[0];
+      const surname = nameParts.slice(1).join(" ");
+      updateProfileName(firstname, surname);
+
       history.push('/login');
     } catch (error) {
       console.error('Erro ao registrar:', error.message);
@@ -36,65 +44,64 @@ const Registrar = () => {
 
   return (
     <IonContent className="register-content">
-    <div className='register-page'>
-      <div className="return-to-login">
-        {}
-        <IonButton fill="clear" onClick={() => history.push('/login')}>
-          <IonIcon icon={arrowBackOutline} slot="start" />
-          Voltar para Login
-        </IonButton>
-      </div>
-      <div className="register-container">
-        <IonInput
-          type="text"
-          placeholder="Usuário"
-          className="senha-ion-input-custom"
-          clearInput
-          value={username}
-          onIonInput={(e) => setUsername(e.target.value)}
-        >
-          <IonIcon icon={personOutline} slot="start" />
-        </IonInput>
-        <IonInput
-          type="email"
-          placeholder="Email"
-          className="senha-ion-input-custom"
-          clearInput
-          value={email}
-          onIonInput={(e) => setEmail(e.target.value)}
-        >
-          <IonIcon icon={personOutline} slot="start" />
-        </IonInput>
-        <IonInput
-          type="password"
-          placeholder="Senha"
-          className="senha-ion-input-custom"
-          clearInput
-          value={password}
-          onIonInput={(e) => setPassword(e.target.value)}
-        >
-          <IonIcon icon={lockClosedOutline} slot="start" />
-        </IonInput>
-        <IonInput
-          type="password"
-          placeholder="Confirmar Senha"
-          className="senha-ion-input-custom"
-          clearInput
-          value={confirmPassword}
-          onIonInput={(e) => setConfirmPassword(e.target.value)}
-        >
-          <IonIcon icon={lockClosedOutline} slot="start" />
-        </IonInput>
-        {error && <IonText color="danger">{error}</IonText>}
-        <IonButton 
-          expand="block" 
-          className="confirm"
-          style={{ '--background': '#fafafa', '--color': '#131313' }}
-          onClick={handleRegister}
-        >
-          Registrar
-        </IonButton>
-      </div>
+      <div className='register-page'>
+        <div className="return-to-login">
+          <IonButton fill="clear" onClick={() => history.push('/login')}>
+            <IonIcon icon={arrowBackOutline} slot="start" />
+            Voltar para Login
+          </IonButton>
+        </div>
+        <div className="register-container">
+          <IonInput
+            type="text"
+            placeholder="Usuário"
+            className="senha-ion-input-custom"
+            clearInput
+            value={username}
+            onIonInput={(e) => setUsername(e.target.value)}
+          >
+            <IonIcon icon={personOutline} slot="start" />
+          </IonInput>
+          <IonInput
+            type="email"
+            placeholder="Email"
+            className="senha-ion-input-custom"
+            clearInput
+            value={email}
+            onIonInput={(e) => setEmail(e.target.value)}
+          >
+            <IonIcon icon={personOutline} slot="start" />
+          </IonInput>
+          <IonInput
+            type="password"
+            placeholder="Senha"
+            className="senha-ion-input-custom"
+            clearInput
+            value={password}
+            onIonInput={(e) => setPassword(e.target.value)}
+          >
+            <IonIcon icon={lockClosedOutline} slot="start" />
+          </IonInput>
+          <IonInput
+            type="password"
+            placeholder="Confirmar Senha"
+            className="senha-ion-input-custom"
+            clearInput
+            value={confirmPassword}
+            onIonInput={(e) => setConfirmPassword(e.target.value)}
+          >
+            <IonIcon icon={lockClosedOutline} slot="start" />
+          </IonInput>
+          {error && <IonText color="danger">{error}</IonText>}
+          <IonButton 
+            expand="block" 
+            className="confirm"
+            style={{ '--background': '#fafafa', '--color': '#131313' }}
+            onClick={handleRegister}
+          >
+            Registrar
+          </IonButton>
+        </div>
       </div>
     </IonContent>
   );

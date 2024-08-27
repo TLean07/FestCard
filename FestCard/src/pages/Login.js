@@ -5,6 +5,7 @@ import { personOutline, lockClosedOutline } from 'ionicons/icons';
 import { auth, googleProvider } from '../data/firebase-config';
 import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
+import { AccountStore } from '../data/AccountStore';
 
 const Login = () => {
   const history = useHistory();
@@ -12,12 +13,20 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
-
+  
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log('User signed in with Google: ', result.user);
-      history.push('/home');
+
+      // Após o login, faça uma verificação no AccountStore
+      const profile = AccountStore.getRawState().profile;
+
+      if (profile.isUsernameSet) {
+        history.push('/home'); // Redireciona para home se o nome já estiver definido
+      } else {
+        history.push('/set-username'); // Se não, redireciona para a página de definição de nome
+      }
     } catch (error) {
       console.error('Error during Google sign-in:', error);
       setToastMessage('Erro ao fazer login com Google.');

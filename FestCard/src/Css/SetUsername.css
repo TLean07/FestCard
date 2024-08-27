@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap');
+
+.set-username-page {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: auto;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: auto;
+  height: 100vh;
+  max-width: auto;
+}
+
+.set-username-logo {
+  width: 100px;
+  margin-bottom: 20px;
+}
+
+.set-username-title {
+  color: #EE1F79;
+  font-family: 'Just Another Hand', cursive;
+  font-size: 36px;
+  margin-bottom: 1rem;
+}
+
+.set-username-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.senha-ion-input-custom {
+  --background: #f0f0f5;
+  --placeholder-color: #8a8a8a;
+  --color: #333333;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.confirm {
+  --background: #EE1F79;
+  --color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.75rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.confirm:hover {
+  --background: #d81a68;
+}
+
+.confirm:active {
+  --background: #b71657;
+}
+
+@media (min-width: 768px) {
+  .set-username-page {
+    padding: 2.5rem;
+    border-radius: 20px;
+  }
+
+  .senha-ion-input-custom {
+    font-size: 1.125rem;
+  }
+
+  .confirm {
+    font-size: 1.125rem;
+    padding: 1rem;
+  }
+}
