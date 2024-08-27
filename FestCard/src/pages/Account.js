@@ -51,7 +51,7 @@ const Account = () => {
                         <IonBackButton color="dark" />
 					</IonButtons>
 
-					<IonTitle>Account</IonTitle>
+					<IonTitle>Conta</IonTitle>
 
 					<IonButtons slot="end">
 						<IonButton onClick={handleLogout}>
@@ -88,14 +88,14 @@ const Account = () => {
                             <h5>
                                 {`${profile.firstname} ${profile.surname}`}
                             </h5>
-                            <h6>{cards.length} current cards</h6>
+                            <h6>{cards.length} Cartões Atuais</h6>
                         </IonCol>
                     </IonRow>
 
                     <IonRow className="ion-text-center">
                         <IonCol size="12">
                             <IonButton color="primary" routerLink="/account/add-card" routerDirection="forward">
-                                <IonIcon icon={addOutline} />Add Card
+                                <IonIcon icon={addOutline} />Adicionar Cartão
                             </IonButton>
                         </IonCol>
                     </IonRow>

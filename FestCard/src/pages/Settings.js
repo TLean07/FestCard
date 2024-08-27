@@ -29,13 +29,6 @@ const Settings = () => {
       </IonHeader>
       <IonContent>
         <IonItem>
-          <IonLabel>Idioma</IonLabel>
-          <IonSelect value={language} onIonChange={e => setLanguage(e.detail.value)}>
-            <IonSelectOption value="en">Inglês</IonSelectOption>
-            <IonSelectOption value="pt">Português</IonSelectOption>
-          </IonSelect>
-        </IonItem>
-        <IonItem>
           <IonLabel>Modo Escuro</IonLabel>
           <IonToggle checked={darkMode} onIonChange={e => setDarkMode(e.detail.checked)} />
         </IonItem>

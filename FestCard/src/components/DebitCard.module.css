@@ -48,11 +48,6 @@
 	-moz-backface-visibility: hidden;
 }
 
-.card_orange {
-
-	background: linear-gradient(to right bottom, #fd696b, #fa616e, #f65871, #c74261, #d62158);
-}
-
 .card_blue {
 
 	background: linear-gradient(to right bottom, #699dfd, #61b5fa, #58aff6, #4b86c9, #2151d6);

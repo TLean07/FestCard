@@ -41,7 +41,7 @@ const AddCard = () => {
             balance: cardBalance,
             transactions: [
                 {
-                    name: "Starting Balance",
+                    name: "Saldo Inicial",
                     amount: cardBalance,
                     deposit: true
                 }
@@ -66,7 +66,7 @@ const AddCard = () => {
                         <IonBackButton color="dark" />
 					</IonButtons>
 
-					<IonTitle>Add Card</IonTitle>
+					<IonTitle>Adicionar Cartão</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			
@@ -83,7 +83,7 @@ const AddCard = () => {
                     <IonRow className="ion-padding-top">
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Card Type</IonLabel>
+                                <IonLabel position="floating">Tipo de Cartão</IonLabel>
                                 <IonSelect placeholder="Select type" value={ cardType } onIonChange={ e => setCardType(e.currentTarget.value) }>
                                     { cardTypes.map((option, index) => {
 
@@ -97,7 +97,7 @@ const AddCard = () => {
 
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Card Color</IonLabel>
+                                <IonLabel position="floating">Cor do Cartão</IonLabel>
                                 <IonSelect placeholder="Select color" value={ cardColor } onIonChange={ e => setCardColor(e.currentTarget.value) }>
                                     { cardColors.map((option, index) => {
 
@@ -113,14 +113,14 @@ const AddCard = () => {
                     <IonRow>
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Card Name</IonLabel>
+                                <IonLabel position="floating">Nome do Cartão</IonLabel>
                                 <IonInput type="text" inputmode="text" placeholder="Card name" value={ cardDescription } onIonChange={ e => setCardDescription(e.currentTarget.value) } />
                             </IonItem>
                         </IonCol>
 
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Starting Balance</IonLabel>
+                                <IonLabel position="floating">Saldo Inicial</IonLabel>
                                 <IonInput type="text" inputmode="text" placeholder="0" value={ cardBalance } onIonChange={ e => setCardBalance(e.currentTarget.value) } />
                             </IonItem>
                         </IonCol>
@@ -129,7 +129,7 @@ const AddCard = () => {
                     <IonRow>
                         <IonCol size="12">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Card Number</IonLabel>
+                                <IonLabel position="floating">Número do Cartão</IonLabel>
                                 <IonInput type="text" inputmode="text" placeholder="**** **** **** ****" value={ cardNumber } onIonChange={ e => setCardNumber(e.currentTarget.value) } />
                             </IonItem>
                         </IonCol>
@@ -138,14 +138,14 @@ const AddCard = () => {
                     <IonRow>
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Card Expiry</IonLabel>
+                                <IonLabel position="floating">Validade do cartão</IonLabel>
                                 <IonInput type="text" inputmode="text" placeholder="01/22" value={ cardExpiry } onIonChange={ e => setCardExpiry(e.currentTarget.value) } />
                             </IonItem>
                         </IonCol>
 
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Card Secret</IonLabel>
+                                <IonLabel position="floating">Número secreto</IonLabel>
                                 <IonInput type="text" inputmode="text" placeholder="123" value={ cardSecret } onIonChange={ e => setCardSecret(e.currentTarget.value) } />
                             </IonItem>
                         </IonCol>
@@ -158,14 +158,14 @@ const AddCard = () => {
                                 { !adding &&
                                     <>
                                         <IonIcon icon={ addOutline } />
-                                        &nbsp; Add Card
+                                        &nbsp; Adicionar Cartão
                                     </>
                                 }
 
                                 { adding &&
                                     <>
                                         <IonIcon icon={ timerOutline } />
-                                        &nbsp; Adding...
+                                        &nbsp; Adicionando...
                                     </>
                                 }
                             </IonButton>

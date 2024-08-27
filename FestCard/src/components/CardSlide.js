@@ -15,7 +15,7 @@ const CardSlide = props => {
             <IonRow className="ion-text-center">
                 <IonCol size="12">
                     <IonCardSubtitle color="medium">
-                        balance
+                        Saldo
                     </IonCardSubtitle>
                     <IonCardSubtitle id={ `slide_${ index }_balance` } className={ ` ${ styles.balance } animate__animated` }>
                         <span className={ styles.poundSign }></span>
@@ -34,7 +34,7 @@ const CardSlide = props => {
 
             <IonRow className={ styles.heading }>
                 <IonCol size="12">
-                    <h6>Transactions</h6>
+                    <h6>Transações</h6>
                 </IonCol>
             </IonRow>
 
@@ -52,9 +52,9 @@ const CardSlide = props => {
 
                <IonRow id={ `slide_${ index }_transactions` } className="animate__animated">
                     <IonCol size="12">
-                        <h5>No transactions found</h5>
+                        <h5>Sem fundos para Transação</h5>
                         <IonButton style={{ "--background": card.color, "--background-focused": card.color, "--background-hover": card.color, "--background-activated": card.color }} routerLink={ `/add-transaction/${ card.id }` }>
-                            <IonIcon icon={ arrowRedoOutline } />&nbsp;Transfer funds
+                            <IonIcon icon={ arrowRedoOutline } />&nbsp;Fundos de Transação
                         </IonButton>
                     </IonCol>
                 </IonRow>

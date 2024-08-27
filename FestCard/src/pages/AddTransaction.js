@@ -14,7 +14,7 @@ const AddTransaction = () => {
 
     const [ cardID, setCardID ] = useState(false);
     const [ card, setCard ] = useState({});
-    const [ transactionName, setTransactionName ] = useState("Test Transaction");
+    const [ transactionName, setTransactionName ] = useState("Transação Teste");
     const [ transactionAmount, setTransactionAmount ] = useState(0);
     const [ transactionDeposit, setTransactionDeposit ] = useState(false);
 
@@ -59,7 +59,7 @@ const AddTransaction = () => {
                         <IonBackButton color="dark" />
 					</IonButtons>
 
-					<IonTitle>Add Transaction</IonTitle>
+					<IonTitle>Adicionar Transação</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			
@@ -76,14 +76,14 @@ const AddTransaction = () => {
                     <IonRow>
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Name</IonLabel>
+                                <IonLabel position="floating">Nome</IonLabel>
                                 <IonInput type="text" inputmode="text" placeholder="Transaction name" value={ transactionName } onIonChange={ e => setTransactionName(e.currentTarget.value) } />
                             </IonItem>
                         </IonCol>
 
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Amount</IonLabel>
+                                <IonLabel position="floating">Quantia</IonLabel>
                                 <IonInput type="text" inputmode="text" placeholder="0" value={ transactionAmount } onIonChange={ e => setTransactionAmount(e.currentTarget.value) } />
                             </IonItem>
                         </IonCol>
@@ -92,7 +92,7 @@ const AddTransaction = () => {
                     <IonRow>
                         <IonCol size="12">
                             <IonItem lines="full">
-                                <IonLabel>Deposit?</IonLabel>
+                                <IonLabel>Depósito?</IonLabel>
                                 <IonToggle style={{ "--background-checked": card.color }} slot="end" value={ transactionDeposit } onIonChange={ e => setTransactionDeposit(e.currentTarget.checked) } />
                             </IonItem>
                         </IonCol>
@@ -105,14 +105,14 @@ const AddTransaction = () => {
                                 { !adding &&
                                     <>
                                         <IonIcon icon={ addOutline } />
-                                        &nbsp; Add Transaction
+                                        &nbsp; Adicionar Transação
                                     </>
                                 }
 
                                 { adding &&
                                     <>
                                         <IonIcon icon={ timerOutline } />
-                                        &nbsp; Adding...
+                                        &nbsp; Adicionando...
                                     </>
                                 }
                             </IonButton>

@@ -24,11 +24,11 @@ const DebitCard = props => {
 				<img className={ `${ styles.card__front_logo } ${ styles.card__logo }` } src={ cardTypeLogo } alt="2" />
 				<p className={ styles.card_number }>**** **** **** { lastFourCardNumbers }</p>
 				<div className={ styles.card__space_75 }>
-					<span className={ styles.card__label }>Card holder</span>
+					<span className={ styles.card__label }>Titular do Cartão</span>
 					<p className={ styles.card__info }>{ `${ profile.firstname } ${ profile.surname }` }</p>
 				</div>
 				<div className={ styles.card__space_25 }>
-					<span className={ styles.card__label }>Expires</span>
+					<span className={ styles.card__label }>Expirar</span>
 					<p className={ styles.card__info }>{ expiry }</p>
 				</div>
 			</div>
