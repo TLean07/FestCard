@@ -19,13 +19,12 @@ const Login = () => {
       const result = await signInWithPopup(auth, googleProvider);
       console.log('User signed in with Google: ', result.user);
 
-      // Após o login, faça uma verificação no AccountStore
       const profile = AccountStore.getRawState().profile;
 
       if (profile.isUsernameSet) {
-        history.push('/home'); // Redireciona para home se o nome já estiver definido
+        history.push('/home'); 
       } else {
-        history.push('/set-username'); // Se não, redireciona para a página de definição de nome
+        history.push('/set-username'); 
       }
     } catch (error) {
       console.error('Error during Google sign-in:', error);

@@ -135,3 +135,19 @@ ion-footer ion-title {
   font-size: 11px;
   font-weight: normal;
 }
+
+:root {
+  --ion-background-color: #ffffff;
+  --ion-text-color: #000000;
+  --ion-toolbar-background: #ffffff; 
+  --ion-toolbar-color: #000000; 
+  --ion-icon-color: #000000;
+}
+
+body.dark {
+  --ion-background-color: #000000;
+  --ion-text-color: #ffffff;
+  --ion-toolbar-background: #000000;
+  --ion-toolbar-color: #ffffff;
+  --ion-icon-color: #ffff;
+}

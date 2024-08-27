@@ -1,99 +1,103 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { IonButton, IonButtons, IonContent, IonGrid, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import styles from "./Home.module.css";
 import { AccountStore } from '../data/AccountStore';
 import CardSlide from '../components/CardSlide';
-import { searchOutline } from 'ionicons/icons';
-import './Home.module.css'
+import { searchOutline, settingsOutline } from 'ionicons/icons';
+import './Home.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper.scss';
 
 const Home = () => {
+    const cards = AccountStore.useState(s => s.cards);
+    const profile = AccountStore.useState(s => s.profile);
 
-  	const cards = AccountStore.useState(s => s.cards);
-	const profile = AccountStore.useState(s => s.profile);
+    const [pageTitle, setPageTitle] = useState('');
+    const [mainColor, setMainColor] = useState('');
+    const [slideSpace, setSlideSpace] = useState(10);
+    const [darkMode, setDarkMode] = useState(false); 
 
-	const [ pageTitle, setPageTitle ] = useState('');
-	const [ mainColor, setMainColor ] = useState('');
-	const [ slideSpace, setSlideSpace ] = useState(10);
+    const slidesRef = useRef();
 
-	const slidesRef = useRef();
-
-	useIonViewDidEnter(() => {
-
+    useIonViewDidEnter(() => {
         setSlideSpace(0);
     });
 
-	const changeSlide = async e => {
+    useEffect(() => {
+        const checkDarkMode = () => {
+            const isDarkMode = document.body.classList.contains('dark');
+            setDarkMode(isDarkMode);
+        };
 
-		const swiper = e;
-		const swiperIndex = swiper.activeIndex;
+        checkDarkMode();
 
-		setPageTitle(cards[swiperIndex].description);
-		setMainColor(cards[swiperIndex].color);
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', checkDarkMode);
 
-		document.getElementById(`slide_${ swiperIndex }_balance`).classList.add("animate__headShake");
+        return () => {
+            window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', checkDarkMode);
+        };
+    }, []);
 
-		setTimeout(() => {
-			
-			document.getElementById(`slide_${ swiperIndex }_balance`).classList.remove("animate__headShake");
-		}, 1000);
-	}
+    const changeSlide = async e => {
+        const swiper = e;
+        const swiperIndex = swiper.activeIndex;
 
-	const manageTouch = async (touched, e) => {
+        setPageTitle(cards[swiperIndex].description);
+        setMainColor(cards[swiperIndex].color);
 
-		const swiper = e;
-		const swiperIndex = swiper.activeIndex;
-		
-		if (touched) {
-			
-			document.getElementById(`slide_${ swiperIndex }_transactions`).classList.add("animate__fadeOut");
-		} else {
+        document.getElementById(`slide_${swiperIndex}_balance`).classList.add("animate__headShake");
 
-			document.getElementById(`slide_${ swiperIndex }_transactions`).classList.remove("animate__fadeOut");
-			document.getElementById(`slide_${ swiperIndex }_transactions`).classList.add("animate__fadeIn");
-		}
-	}
+        setTimeout(() => {
+            document.getElementById(`slide_${swiperIndex}_balance`).classList.remove("animate__headShake");
+        }, 1000);
+    };
 
-	return (
-		<IonPage className={ styles.homePage }>
-			<IonHeader>
-				<IonToolbar>
+    const manageTouch = async (touched, e) => {
+        const swiper = e;
+        const swiperIndex = swiper.activeIndex;
 
-					<IonButtons slot="start">
-						<IonButton routerLink="/account" className={ styles.toolbarAvatar }>
-							<img alt="toolbar avatar" className={ styles.toolbarAvatarImage } src={ profile.avatar } />
-						</IonButton>
-					</IonButtons>
+        if (touched) {
+            document.getElementById(`slide_${swiperIndex}_transactions`).classList.add("animate__fadeOut");
+        } else {
+            document.getElementById(`slide_${swiperIndex}_transactions`).classList.remove("animate__fadeOut");
+            document.getElementById(`slide_${swiperIndex}_transactions`).classList.add("animate__fadeIn");
+        }
+    };
 
-					<IonTitle>{ pageTitle }</IonTitle>
+    return (
+        <IonPage className={styles.homePage}>
+            <IonHeader>
+                <IonToolbar>
 
-					<IonButtons slot="end">
-						<IonButton>
-							<IonIcon color="light" icon={ searchOutline } style={{ backgroundColor: mainColor, borderRadius: "500px", padding: "0.2rem" }} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
-			
-			<IonContent fullscreen>
+                    <IonButtons slot="start">
+                        <IonButton routerLink="/account" className={styles.toolbarAvatar}>
+                            <img alt="toolbar avatar" className={styles.toolbarAvatarImage} src={profile.avatar} />
+                        </IonButton>
+                    </IonButtons>
 
-				<IonGrid>
-					<Swiper spaceBetween={ slideSpace } ref={ slidesRef } slidesPerView={ 1 } className={ styles.cardsContainer }  onTouchStart={ e => manageTouch(true, e) } onTouchEnd={ e => manageTouch(false, e) } onSlideChange={ e => changeSlide(e) }>
+                    <IonTitle>{pageTitle}</IonTitle>
 
-						{ cards.map((card, index) => {
-							return (
+                    <IonButtons slot="end">
+                        <IonButton routerLink="/settings">
+                            <IonIcon icon={settingsOutline} />
+                        </IonButton>
+                    </IonButtons>
+                </IonToolbar>
+            </IonHeader>
 
-								<SwiperSlide key={ `slide_${ index }` } id={ `slide_${ index }` } className={ styles.customSlide }>
-									<CardSlide key={ index } card={ card } profile={ profile } index={ index } />
-								</SwiperSlide>
-							);
-						})}
-					</Swiper>
-				</IonGrid>
-			</IonContent>
-		</IonPage>
-	);
+            <IonContent fullscreen>
+                <IonGrid>
+                    <Swiper spaceBetween={slideSpace} ref={slidesRef} slidesPerView={1} className={styles.cardsContainer} onTouchStart={e => manageTouch(true, e)} onTouchEnd={e => manageTouch(false, e)} onSlideChange={e => changeSlide(e)}>
+                        {cards.map((card, index) => (
+                            <SwiperSlide key={`slide_${index}`} id={`slide_${index}`} className={styles.customSlide}>
+                                <CardSlide key={index} card={card} profile={profile} index={index} />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </IonGrid>
+            </IonContent>
+        </IonPage>
+    );
 };
 
 export default Home;
