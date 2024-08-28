@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "784453622855",
+    "firebase_url": "https://coinbank-34c76-default-rtdb.firebaseio.com",
+    "project_id": "coinbank-34c76",
+    "storage_bucket": "coinbank-34c76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784453622855:android:a1de00172f7280b17f6562",
+        "android_client_info": {
+          "package_name": "com.festapp.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784453622855-eqe6rl9eojg2meit872d18gl630cvrke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz9TVInwc9qopVxKgKAZWeZHWmertaSZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784453622855-eqe6rl9eojg2meit872d18gl630cvrke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

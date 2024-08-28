@@ -1,6 +1,6 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "ionic-react-banking-ui",
+	"appId": "com.festapp.myapp",
+	"appName": "FestCard",
 	"bundledWebRuntime": false,
 	"npmClient": "npm",
 	"webDir": "build",
@@ -9,5 +9,8 @@
 			"launchShowDuration": 0
 		}
 	},
-	"cordova": {}
+	"cordova": {},
+	"packageClassList": [
+		"CAPBrowserPlugin"
+	]
 }

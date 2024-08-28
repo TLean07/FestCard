@@ -3,7 +3,7 @@ import '../Css/Login.css';
 import { IonContent, IonInput, IonButton, IonIcon, IonToast } from '@ionic/react';
 import { personOutline, lockClosedOutline, logoGoogle } from 'ionicons/icons';
 import { auth, googleProvider } from '../data/firebase-config';
-import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithRedirect, signInWithEmailAndPassword, getRedirectResult } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
 import { AccountStore } from '../data/AccountStore';
 
@@ -16,22 +16,36 @@ const Login = () => {
   
   const handleGoogleLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log('User signed in with Google: ', result.user);
-
-      const profile = AccountStore.getRawState().profile;
-
-      if (profile.isUsernameSet) {
-        history.push('/home'); 
-      } else {
-        history.push('/set-username'); 
-      }
+      await signInWithRedirect(auth, googleProvider);
     } catch (error) {
       console.error('Error during Google sign-in:', error);
       setToastMessage('Erro ao fazer login com Google.');
       setShowToast(true);
     }
   };
+
+  const handleRedirectResult = async () => {
+    try {
+      const result = await getRedirectResult(auth);
+      if (result) {
+        console.log('User signed in with Google: ', result.user);
+
+        const profile = AccountStore.getRawState().profile;
+
+        if (profile.isUsernameSet) {
+          history.push('/home'); 
+        } else {
+          history.push('/set-username'); 
+        }
+      }
+    } catch (error) {
+      console.error('Error getting redirect result:', error);
+    }
+  };
+
+  React.useEffect(() => {
+    handleRedirectResult();
+  }, []);
 
   const handleEmailLogin = async () => {
     try {
