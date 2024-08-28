@@ -3,10 +3,13 @@ import '../Css/Login.css';
 import { IonContent, IonInput, IonButton, IonIcon, IonToast } from '@ionic/react';
 import { personOutline, lockClosedOutline, logoGoogle } from 'ionicons/icons';
 import { auth, googleProvider } from '../data/firebase-config';
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
 import { AccountStore } from '../data/AccountStore';
-import { Browser } from '@capacitor/browser';
+import { Plugins, Capacitor } from '@capacitor/core';
+import '@codetrix-studio/capacitor-google-auth';
+
+const { GoogleAuth } = Plugins;
 
 const Login = () => {
   const history = useHistory();
@@ -17,24 +20,27 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      await Browser.open({ url: `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=token&scope=email` });
+      let result;
 
-      Browser.addListener('browserFinished', async (info) => {
-        const url = new URL(info.url);
-        const accessToken = url.hash.split('&')[0].split('=')[1];
+      if (Capacitor.isNativePlatform()) {
+        // Se o aplicativo estiver sendo executado em um dispositivo nativo
+        const googleUser = await GoogleAuth.signIn();
+        const credential = googleProvider.credential(googleUser.authentication.idToken);
+        result = await auth.signInWithCredential(credential);
+      } else {
+        // Se o aplicativo estiver sendo executado em um navegador (web)
+        result = await signInWithPopup(auth, googleProvider);
+      }
 
-        const credential = GoogleAuthProvider.credential(null, accessToken);
-        const result = await signInWithCredential(auth, credential);
+      console.log('User signed in with Google: ', result.user);
 
-        console.log('User signed in with Google: ', result.user);
-        const profile = AccountStore.getRawState().profile;
+      const profile = AccountStore.getRawState().profile;
 
-        if (profile.isUsernameSet) {
-          history.push('/home');
-        } else {
-          history.push('/set-username');
-        }
-      });
+      if (profile.isUsernameSet) {
+        history.push('/home'); 
+      } else {
+        history.push('/set-username'); 
+      }
     } catch (error) {
       console.error('Error during Google sign-in:', error);
       setToastMessage('Erro ao fazer login com Google.');
@@ -56,7 +62,7 @@ const Login = () => {
   };
 
   const handleRegister = () => {
-    history.push('/Registrar');
+    history.push('/registrar');
   };
 
   return (

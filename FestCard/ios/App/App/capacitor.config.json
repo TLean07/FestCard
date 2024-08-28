@@ -11,6 +11,7 @@
 	},
 	"cordova": {},
 	"packageClassList": [
-		"CAPBrowserPlugin"
+		"CAPBrowserPlugin",
+		"GoogleAuth"
 	]
 }
