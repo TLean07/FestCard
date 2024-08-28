@@ -30,6 +30,13 @@
             {
               "client_id": "784453622855-eqe6rl9eojg2meit872d18gl630cvrke.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "784453622855-r57pklbnut0bk1qhv02iatl1obaeikuk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.festapp.myapp"
+              }
             }
           ]
         }
