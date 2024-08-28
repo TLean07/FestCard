@@ -46,6 +46,7 @@
   padding: 0.75rem;
   border-radius: 5px;
   transition: background-color 0.3s ease-in-out;
+  height: 55px;
 }
 
 .confirm:hover {

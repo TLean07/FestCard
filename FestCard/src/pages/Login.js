@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../Css/Login.css';
 import { IonContent, IonInput, IonButton, IonIcon, IonToast } from '@ionic/react';
-import { personOutline, lockClosedOutline } from 'ionicons/icons';
+import { personOutline, lockClosedOutline, logoGoogle } from 'ionicons/icons';
 import { auth, googleProvider } from '../data/firebase-config';
 import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
@@ -91,7 +91,7 @@ const Login = () => {
               className="confirm"
               onClick={handleGoogleLogin}
             >
-            <ion-icon name="logo-google"></ion-icon>  
+              <IonIcon icon={logoGoogle} slot="start" />
               Entrar com Google
             </IonButton>
             <IonButton 
