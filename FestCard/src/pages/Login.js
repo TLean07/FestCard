@@ -3,9 +3,10 @@ import '../Css/Login.css';
 import { IonContent, IonInput, IonButton, IonIcon, IonToast } from '@ionic/react';
 import { personOutline, lockClosedOutline, logoGoogle } from 'ionicons/icons';
 import { auth, googleProvider } from '../data/firebase-config';
-import { signInWithRedirect, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
 import { AccountStore } from '../data/AccountStore';
+import { Browser } from '@capacitor/browser';
 
 const Login = () => {
   const history = useHistory();
@@ -13,19 +14,27 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
-  
+
   const handleGoogleLogin = async () => {
     try {
-      const result = await signInWithRedirect(auth, googleProvider);
-      console.log('User signed in with Google: ', result.user);
+      await Browser.open({ url: `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=token&scope=email` });
 
-      const profile = AccountStore.getRawState().profile;
+      Browser.addListener('browserFinished', async (info) => {
+        const url = new URL(info.url);
+        const accessToken = url.hash.split('&')[0].split('=')[1];
 
-      if (profile.isUsernameSet) {
-        history.push('/home'); 
-      } else {
-        history.push('/set-username'); 
-      }
+        const credential = GoogleAuthProvider.credential(null, accessToken);
+        const result = await signInWithCredential(auth, credential);
+
+        console.log('User signed in with Google: ', result.user);
+        const profile = AccountStore.getRawState().profile;
+
+        if (profile.isUsernameSet) {
+          history.push('/home');
+        } else {
+          history.push('/set-username');
+        }
+      });
     } catch (error) {
       console.error('Error during Google sign-in:', error);
       setToastMessage('Erro ao fazer login com Google.');
