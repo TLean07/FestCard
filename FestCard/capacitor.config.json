@@ -1,5 +1,5 @@
 {
-  "appId": "FestCard",
+  "appId": "com.festapp.myapp",
   "appName": "FestCard",
   "bundledWebRuntime": false,
   "npmClient": "npm",
