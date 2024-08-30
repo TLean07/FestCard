@@ -23,12 +23,10 @@ const Login = () => {
       let result;
 
       if (Capacitor.isNativePlatform()) {
-        // Se o aplicativo estiver sendo executado em um dispositivo nativo
         const googleUser = await GoogleAuth.signIn();
         const credential = googleProvider.credential(googleUser.authentication.idToken);
         result = await auth.signInWithCredential(credential);
       } else {
-        // Se o aplicativo estiver sendo executado em um navegador (web)
         result = await signInWithPopup(auth, googleProvider);
       }
 
