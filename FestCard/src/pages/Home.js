@@ -1,118 +1,103 @@
-import React, { useState } from 'react';
-import '../Css/Login.css';
-import { IonContent, IonInput, IonButton, IonIcon, IonToast } from '@ionic/react';
-import { personOutline, lockClosedOutline, logoGoogle } from 'ionicons/icons';
-import { auth, googleProvider } from '../data/firebase-config';
-import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
-import { useHistory } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { IonButton, IonButtons, IonContent, IonGrid, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
+import styles from "./Home.module.css";
 import { AccountStore } from '../data/AccountStore';
+import CardSlide from '../components/CardSlide';
+import { searchOutline, settingsOutline } from 'ionicons/icons';
+import './Home.module.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper.scss';
 
-const Login = () => {
-  const history = useHistory();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [toastMessage, setToastMessage] = useState('');
-  const [showToast, setShowToast] = useState(false);
+const Home = () => {
+    const cards = AccountStore.useState(s => s.cards);
+    const profile = AccountStore.useState(s => s.profile);
 
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log('User signed in with Google: ', result.user);
+    const [pageTitle, setPageTitle] = useState('');
+    const [mainColor, setMainColor] = useState('');
+    const [slideSpace, setSlideSpace] = useState(10);
+    const [darkMode, setDarkMode] = useState(false); 
 
-      const profile = AccountStore.getRawState().profile;
+    const slidesRef = useRef();
 
-      if (profile.isUsernameSet) {
-        history.push('/home'); 
-      } else {
-        history.push('/set-username'); 
-      }
-    } catch (error) {
-      console.error('Error during Google sign-in:', error);
-      setToastMessage('Erro ao fazer login com Google.');
-      setShowToast(true);
-    }
-  };
+    useIonViewDidEnter(() => {
+        setSlideSpace(0);
+    });
 
-  const handleEmailLogin = async () => {
-    try {
-      console.log('Attempting to sign in with email:', email);
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      console.log('User signed in with email: ', result.user);
-      history.push('/home');
-    } catch (error) {
-      console.error('Error during email sign-in:', error);
-      setToastMessage('Erro ao fazer login. Verifique suas credenciais.');
-      setShowToast(true);
-    }
-  };
+    useEffect(() => {
+        const checkDarkMode = () => {
+            const isDarkMode = document.body.classList.contains('dark');
+            setDarkMode(isDarkMode);
+        };
 
-  const handleRegister = () => {
-    history.push('/registrar');
-  };
+        checkDarkMode();
 
-  return (
-    <IonContent className="login-content">
-      <div className="login-page">
-        <img src="/icon.png" alt="Logo" className="login-logo" />
-        <h1 className="login-title">Login</h1>
-        <div className="login-container">
-          <IonInput
-            type="email"
-            placeholder="Email"
-            className="senha-ion-input-custom"
-            clearInput
-            autocomplete="username"
-            value={email}
-            onIonInput={(e) => setEmail(e.target.value)}
-          >
-            <IonIcon icon={personOutline} slot="start" />
-          </IonInput>
-          <IonInput
-            type="password"
-            placeholder="Senha"
-            className="senha-ion-input-custom"
-            clearInput
-            autocomplete="current-password"
-            value={password}
-            onIonInput={(e) => setPassword(e.target.value)}
-          >
-            <IonIcon icon={lockClosedOutline} slot="start"/>
-          </IonInput>
-          <div className="button-ion-input-custom">
-            <IonButton
-              expand="block"
-              className="confirm"
-              onClick={handleEmailLogin}
-            >
-              Confirmar
-            </IonButton>
-            <IonButton 
-              expand="block" 
-              className="confirm"
-              onClick={handleGoogleLogin}
-            >
-              <IonIcon icon={logoGoogle} slot="start" />
-              Entrar com Google
-            </IonButton>
-            <IonButton 
-              size="small" 
-              fill="clear" 
-              className="register-button"
-              onClick={handleRegister}
-            >
-            Não tem uma conta? Registrar
-            </IonButton>
-          </div>
-        </div>
-      </div>
-      <IonToast
-        isOpen={showToast}
-        onDidDismiss={() => setShowToast(false)}
-        message={toastMessage}
-        duration={3000}
-      />
-    </IonContent>
-  );
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', checkDarkMode);
+
+        return () => {
+            window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', checkDarkMode);
+        };
+    }, []);
+
+    const changeSlide = async e => {
+        const swiper = e;
+        const swiperIndex = swiper.activeIndex;
+
+        setPageTitle(cards[swiperIndex].description);
+        setMainColor(cards[swiperIndex].color);
+
+        document.getElementById(`slide_${swiperIndex}_balance`).classList.add("animate__headShake");
+
+        setTimeout(() => {
+            document.getElementById(`slide_${swiperIndex}_balance`).classList.remove("animate__headShake");
+        }, 1000);
+    };
+
+    const manageTouch = async (touched, e) => {
+        const swiper = e;
+        const swiperIndex = swiper.activeIndex;
+
+        if (touched) {
+            document.getElementById(`slide_${swiperIndex}_transactions`).classList.add("animate__fadeOut");
+        } else {
+            document.getElementById(`slide_${swiperIndex}_transactions`).classList.remove("animate__fadeOut");
+            document.getElementById(`slide_${swiperIndex}_transactions`).classList.add("animate__fadeIn");
+        }
+    };
+
+    return (
+        <IonPage className={styles.homePage}>
+            <IonHeader>
+                <IonToolbar>
+
+                    <IonButtons slot="start">
+                        <IonButton routerLink="/account" className={styles.toolbarAvatar}>
+                            <img alt="toolbar avatar" className={styles.toolbarAvatarImage} src={profile.avatar} />
+                        </IonButton>
+                    </IonButtons>
+
+                    <IonTitle>{pageTitle}</IonTitle>
+
+                    <IonButtons slot="end">
+                        <IonButton routerLink="/settings">
+                            <IonIcon icon={settingsOutline} />
+                        </IonButton>
+                    </IonButtons>
+                </IonToolbar>
+            </IonHeader>
+
+            <IonContent fullscreen>
+                <IonGrid>
+                    <Swiper spaceBetween={slideSpace} ref={slidesRef} slidesPerView={1} className={styles.cardsContainer} onTouchStart={e => manageTouch(true, e)} onTouchEnd={e => manageTouch(false, e)} onSlideChange={e => changeSlide(e)}>
+                        {cards.map((card, index) => (
+                            <SwiperSlide key={`slide_${index}`} id={`slide_${index}`} className={styles.customSlide}>
+                                <CardSlide key={index} card={card} profile={profile} index={index} />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </IonGrid>
+            </IonContent>
+        </IonPage>
+    );
 };
 
-export default Login;
+export default Home;
