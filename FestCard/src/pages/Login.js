@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import '../Css/Login.css';
 import { IonContent, IonInput, IonButton, IonIcon, IonToast } from '@ionic/react';
-import { personOutline, lockClosedOutline } from 'ionicons/icons';
+import { personOutline, lockClosedOutline, logoGoogle } from 'ionicons/icons';
 import { auth, googleProvider } from '../data/firebase-config';
 import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
 import { AccountStore } from '../data/AccountStore';
-import { Plugins, Capacitor } from '@capacitor/core';
-import '@codetrix-studio/capacitor-google-auth';
-
-const { GoogleAuth } = Plugins;
 
 const Login = () => {
   const history = useHistory();
@@ -17,19 +13,10 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
-
+  
   const handleGoogleLogin = async () => {
     try {
-      let result;
-
-      if (Capacitor.isNativePlatform()) {
-        const googleUser = await GoogleAuth.signIn();
-        const credential = googleProvider.credential(googleUser.authentication.idToken);
-        result = await auth.signInWithCredential(credential);
-      } else {
-        result = await signInWithPopup(auth, googleProvider);
-      }
-
+      const result = await signInWithPopup(auth, googleProvider);
       console.log('User signed in with Google: ', result.user);
 
       const profile = AccountStore.getRawState().profile;
@@ -60,7 +47,7 @@ const Login = () => {
   };
 
   const handleRegister = () => {
-    history.push('/registrar');
+    history.push('/Registrar');
   };
 
   return (
