@@ -1,31 +1,34 @@
-import React, { useState } from 'react';
-import '../Css/Login.css';
+import React, { useState, useEffect } from 'react';
 import { IonContent, IonInput, IonButton, IonIcon, IonToast } from '@ionic/react';
 import { personOutline, lockClosedOutline, logoGoogle } from 'ionicons/icons';
-import { auth, googleProvider } from '../data/firebase-config';
-import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
-import { AccountStore } from '../data/AccountStore';
+import { loadUserData } from '../data/AccountStore';
+import '../Css/Login.css'
 
 const Login = () => {
-  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
-  
+  const history = useHistory();
+  const auth = getAuth();
+  const googleProvider = new GoogleAuthProvider();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loadUserData(); 
+        history.push('/home');
+      }
+    });
+
+    return () => unsubscribe(); 
+  }, [auth, history]);
+
   const handleGoogleLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log('User signed in with Google: ', result.user);
-
-      const profile = AccountStore.getRawState().profile;
-
-      if (profile.isUsernameSet) {
-        history.push('/home'); 
-      } else {
-        history.push('/set-username'); 
-      }
+      await signInWithPopup(auth, googleProvider);
     } catch (error) {
       console.error('Error during Google sign-in:', error);
       setToastMessage('Erro ao fazer login com Google.');
@@ -35,10 +38,7 @@ const Login = () => {
 
   const handleEmailLogin = async () => {
     try {
-      console.log('Attempting to sign in with email:', email);
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      console.log('User signed in with email: ', result.user);
-      history.push('/home');
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.error('Error during email sign-in:', error);
       setToastMessage('Erro ao fazer login. Verifique suas credenciais.');
@@ -47,7 +47,7 @@ const Login = () => {
   };
 
   const handleRegister = () => {
-    history.push('/Registrar');
+    history.push('/registrar');
   };
 
   return (
@@ -76,7 +76,7 @@ const Login = () => {
             value={password}
             onIonInput={(e) => setPassword(e.target.value)}
           >
-            <IonIcon icon={lockClosedOutline} slot="start"/>
+            <IonIcon icon={lockClosedOutline} slot="start" />
           </IonInput>
           <div className="button-ion-input-custom">
             <IonButton
