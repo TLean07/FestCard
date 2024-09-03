@@ -17,14 +17,13 @@ const Account = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        loadUserData(); // Carrega os dados do Firestore
+        loadUserData(); 
       }
     });
 
     return () => unsubscribe();
   }, [auth]);
 
-  // useEffect para salvar automaticamente as mudanças no Firestore
   useEffect(() => {
     const saveChanges = async () => {
       try {
@@ -35,12 +34,9 @@ const Account = () => {
       }
     };
 
-    // Adiciona um listener para mudanças no estado do AccountStore
     const unsubscribe = AccountStore.subscribe(saveChanges);
-
-    // Limpa o listener quando o componente é desmontado
     return () => unsubscribe();
-  }, [cards, profile]); // Dependências para monitorar mudanças nos cartões e perfil
+  }, [cards, profile]);
 
   const handleAvatarClick = () => {
     fileInputRef.current.click(); 
@@ -53,7 +49,7 @@ const Account = () => {
       reader.onload = (e) => {
         const newAvatarUrl = e.target.result;
         AccountStore.update(s => {
-          s.profile.avatar = newAvatarUrl; // Atualiza o avatar no estado local
+          s.profile.avatar = newAvatarUrl;
         });
       };
       reader.readAsDataURL(file); 
@@ -89,7 +85,7 @@ const Account = () => {
       <IonContent fullscreen>
         <IonGrid>
           <IonRow className="ion-text-center ion-justify-content-center">
-            <IonCol size="4" className="animate__animated animate__fadeInTopLeft animate__faster">
+            <IonCol size="4">
               <img 
                 src={profile.avatar} 
                 className={styles.avatar} 
@@ -107,10 +103,10 @@ const Account = () => {
             </IonCol>
           </IonRow>
 
-          <IonRow className={`ion-no-margin ion-text-center ion-justify-content-center ${styles.profileDetails}`}>
+          <IonRow className="ion-no-margin ion-text-center ion-justify-content-center">
             <IonCol size="12">
               <h5>{`${profile.firstname} ${profile.surname}`}</h5>
-              <h6>{cards.length} Cartões Atuais</h6>
+              <h6>{`${cards.length} Cartões Atuais`}</h6>
             </IonCol>
           </IonRow>
 

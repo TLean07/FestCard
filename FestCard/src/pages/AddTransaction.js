@@ -1,3 +1,4 @@
+// src/pages/AddTransaction.js
 import React, { useState } from 'react';
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToggle, IonToolbar, useIonViewWillEnter } from '@ionic/react';
 import styles from "./Account.module.css";
@@ -10,8 +11,8 @@ const AddTransaction = () => {
     const cards = AccountStore.useState(s => s.cards);
     const profile = AccountStore.useState(s => s.profile);
 
-    const [cardID, setCardID] = useState(false);
-    const [card, setCard] = useState({});
+    const [cardID, setCardID] = useState(null);
+    const [card, setCard] = useState(null);
     const [transactionName, setTransactionName] = useState("Transação Teste");
     const [transactionAmount, setTransactionAmount] = useState(0);
     const [transactionDeposit, setTransactionDeposit] = useState(false);
@@ -22,14 +23,24 @@ const AddTransaction = () => {
 
     useIonViewWillEnter(() => {
         const tempCardID = params.card_id;
-        const tempCard = cards.find(c => parseInt(c.id) === parseInt(tempCardID));
         setCardID(tempCardID);
-        setCard(tempCard);
+
+        const tempCard = cards.find(c => c.id === tempCardID);
+        if (tempCard) {
+            setCard(tempCard);
+        } else {
+            console.error('Cartão não encontrado');
+        }
     });
 
     const addTransaction = async () => {
         if (!transactionName || !transactionAmount) {
             alert('Por favor, preencha todos os campos.');
+            return;
+        }
+
+        if (!card) {
+            console.error('Cartão não encontrado. Operação cancelada.');
             return;
         }
 
@@ -39,7 +50,7 @@ const AddTransaction = () => {
             name: transactionName,
             amount: parseFloat(transactionAmount),
             deposit: transactionDeposit,
-            date: new Date().toISOString(), 
+            date: new Date().toISOString(),
         };
 
         try {
@@ -52,6 +63,30 @@ const AddTransaction = () => {
             setAdding(false);
         }
     };
+
+    if (!card) {
+        return (
+            <IonPage>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonButtons slot="start">
+                            <IonBackButton color="dark" />
+                        </IonButtons>
+                        <IonTitle>Adicionar Transação</IonTitle>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent fullscreen>
+                    <IonGrid>
+                        <IonRow className="ion-text-center ion-justify-content-center">
+                            <IonCol>
+                                <p>Cartão não encontrado</p>
+                            </IonCol>
+                        </IonRow>
+                    </IonGrid>
+                </IonContent>
+            </IonPage>
+        );
+    }
 
     return (
         <IonPage className={styles.accountPage}>

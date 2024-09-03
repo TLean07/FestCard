@@ -1,7 +1,7 @@
 // src/data/AccountStore.js
 import { Store } from "pullstate";
 import { auth, db } from './firebase-config';
-import { doc, setDoc, updateDoc, collection, getDoc, getDocs } from "firebase/firestore"; // Importando as funções necessárias do Firestore
+import { doc, setDoc, getDoc, collection, getDocs } from "firebase/firestore";
 
 export const AccountStore = new Store({
     profile: {
@@ -14,7 +14,12 @@ export const AccountStore = new Store({
 });
 
 export const loadUserData = async (updateLocalState = true) => {
-    const userId = auth.currentUser.uid;
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+        console.error("User is not authenticated. Cannot load user data.");
+        return;
+    }
+
     const userProfileRef = doc(db, "users", userId);
     const profileDoc = await getDoc(userProfileRef);
 
@@ -49,8 +54,15 @@ export const loadUserData = async (updateLocalState = true) => {
 };
 
 export const saveUserData = async () => {
-    const userId = auth.currentUser.uid;
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+        console.error("User is not authenticated. Cannot save user data.");
+        return;
+    }
+
     const { profile, cards } = AccountStore.getRawState();
+
+    console.log("Saving user data to Firestore:", { userId, profile, cards });
 
     try {
         const userProfileRef = doc(db, "users", userId);
@@ -58,10 +70,16 @@ export const saveUserData = async () => {
 
         for (const card of cards) {
             const cardRef = doc(db, "users", userId, "cards", card.id);
-            await updateDoc(cardRef, {
-                balance: card.balance,
-                transactions: card.transactions
-            });
+            console.log("Updating card:", card);
+
+            await setDoc(cardRef, {
+                type: card.type,
+                color: card.color,
+                description: card.description,
+                number: card.number,
+                balance: card.balance || 0,
+                transactions: card.transactions || []
+            }, { merge: true });
         }
     } catch (error) {
         console.error('Erro ao salvar os dados no Firestore:', error);
@@ -74,6 +92,7 @@ export const updateProfileName = (firstname, surname) => {
         s.profile.surname = surname;
         s.profile.isUsernameSet = true;
     });
+    saveUserData(); // Salva automaticamente no Firestore após a atualização do perfil
 };
 
 export const addCardToAccount = (newCard) => {
@@ -83,19 +102,33 @@ export const addCardToAccount = (newCard) => {
             { ...newCard, id: Math.random().toString(36).substr(2, 9) } // ID temporário
         ];
     });
+    saveUserData(); // Salva automaticamente no Firestore após a adição do cartão
 };
 
 export const addTransactionToCard = async (newTransaction, cardID) => {
     AccountStore.update(s => {
-        const card = s.cards.find(c => parseInt(c.id) === parseInt(cardID));
+        const card = s.cards.find(c => c.id === cardID);
         if (card) {
             card.transactions.push(newTransaction);
 
             if (newTransaction.deposit) {
                 card.balance = (parseFloat(card.balance) || 0) + parseFloat(newTransaction.amount);
             } else {
-                card.balance = (parseFloat(card.balance)|| 0) - parseFloat(newTransaction.amount);
+                card.balance = (parseFloat(card.balance) || 0) - parseFloat(newTransaction.amount);
             }
         }
     });
+    saveUserData(); // Salva automaticamente no Firestore após a adição de uma transação
+};
+
+export const autoSaveChanges = () => {
+    const unsubscribe = AccountStore.subscribe(async () => {
+        try {
+            await saveUserData();
+            console.log('Alterações salvas automaticamente no Firestore.');
+        } catch (error) {
+            console.error('Erro ao salvar alterações automaticamente no Firestore:', error);
+        }
+    });
+    return unsubscribe; // Retorna a função para remover o listener quando necessário
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IonContent, IonInput, IonButton, IonText, IonIcon } from '@ionic/react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../data/firebase-config';
 import { useHistory } from 'react-router-dom'; 
 import { personOutline, lockClosedOutline, arrowBackOutline } from 'ionicons/icons';
@@ -34,6 +34,10 @@ const Registrar = () => {
       const surname = nameParts.slice(1).join(" ");
       updateProfileName(firstname, surname);
 
+      // Logout automático após o registro para redirecionar para a página de login
+      await signOut(auth);
+
+      // Redireciona para a página de login
       history.push('/login');
     } catch (error) {
       console.error('Erro ao registrar:', error.message);
