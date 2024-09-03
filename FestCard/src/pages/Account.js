@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import styles from "./Account.module.css";
-import { AccountStore, loadUserData, saveUserData } from '../data/AccountStore'; 
+import { AccountStore, loadUserData, saveUserData } from '../data/AccountStore';
 import { addOutline, logOutOutline } from 'ionicons/icons';
 import { formatBalance } from '../data/Utils';
 import { useHistory } from 'react-router-dom';
@@ -17,12 +17,30 @@ const Account = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        loadUserData();
+        loadUserData(); // Carrega os dados do Firestore
       }
     });
 
     return () => unsubscribe();
   }, [auth]);
+
+  // useEffect para salvar automaticamente as mudanças no Firestore
+  useEffect(() => {
+    const saveChanges = async () => {
+      try {
+        await saveUserData();
+        console.log('Alterações salvas automaticamente no Firestore.');
+      } catch (error) {
+        console.error('Erro ao salvar alterações automaticamente no Firestore:', error);
+      }
+    };
+
+    // Adiciona um listener para mudanças no estado do AccountStore
+    const unsubscribe = AccountStore.subscribe(saveChanges);
+
+    // Limpa o listener quando o componente é desmontado
+    return () => unsubscribe();
+  }, [cards, profile]); // Dependências para monitorar mudanças nos cartões e perfil
 
   const handleAvatarClick = () => {
     fileInputRef.current.click(); 
@@ -35,7 +53,7 @@ const Account = () => {
       reader.onload = (e) => {
         const newAvatarUrl = e.target.result;
         AccountStore.update(s => {
-          s.profile.avatar = newAvatarUrl; 
+          s.profile.avatar = newAvatarUrl; // Atualiza o avatar no estado local
         });
       };
       reader.readAsDataURL(file); 
@@ -49,16 +67,6 @@ const Account = () => {
       window.location.reload(); 
     } catch (error) {
       console.error('Erro ao deslogar:', error);
-    }
-  };
-
-  const handleSaveChanges = async () => {
-    try {
-      await saveUserData(); 
-      alert('Alterações salvas com sucesso!');
-    } catch (error) {
-      console.error('Erro ao salvar alterações:', error);
-      alert('Erro ao salvar alterações.');
     }
   };
 
@@ -133,14 +141,6 @@ const Account = () => {
               </IonRow>
             ))}
           </div>
-
-          <IonRow className="ion-text-center ion-margin-top">
-            <IonCol size="12">
-              <IonButton color="success" onClick={handleSaveChanges}>
-                Salvar Alterações
-              </IonButton>
-            </IonCol>
-          </IonRow>
         </IonGrid>
       </IonContent>
     </IonPage>
