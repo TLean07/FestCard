@@ -1,4 +1,3 @@
-// src/data/AccountStore.js
 import { Store } from "pullstate";
 import { auth, db } from './firebase-config';
 import { doc, setDoc, getDoc, collection, getDocs } from "firebase/firestore";
