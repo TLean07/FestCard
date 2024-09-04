@@ -1,41 +1,98 @@
-import React from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton } from '@ionic/react';
+import React, { useState, useEffect } from 'react';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonSlides, IonSlide } from '@ionic/react';
 
 const Ticket = () => {
-  // Dados fictícios dos shows
+  const [pageTitle, setPageTitle] = useState('Shows');
+  const [mainColor, setMainColor] = useState('#292929'); 
+  const [buttonTextColor, setButtonTextColor] = useState('#fff'); 
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--main-color', mainColor);
+    document.documentElement.style.setProperty('--button-text-color', buttonTextColor);
+  }, [mainColor, buttonTextColor]);
+
   const shows = [
     { id: 1, title: 'Rock in Rio', date: '25 de Setembro, 2024' },
     { id: 2, title: 'Lollapalooza', date: '15 de Março, 2024' },
-    { id: 3, title: 'Tomorrowland', date: '10 de Julho, 2024' },
-    { id: 4, title: 'Coachella', date: '20 de Abril, 2024' },
-    { id: 5, title: 'Ultra Music Festival', date: '8 de Outubro, 2024' },
-    { id: 6, title: 'EDC Las Vegas', date: '18 de Junho, 2024' },
-    { id: 7, title: 'Burning Man', date: '30 de Agosto, 2024' },
+    { id: 3, title: 'Tomorrowland', date: '10 de Julho, 2024' }
   ];
+
+  const sports = [
+    { id: 1, title: 'Final da Copa do Mundo', date: '18 de Dezembro, 2024' },
+    { id: 2, title: 'Super Bowl', date: '11 de Fevereiro, 2024' },
+    { id: 3, title: 'NBA Finals', date: '5 de Junho, 2024' }
+  ];
+
+  const festivals = [
+    { id: 1, title: 'Oktoberfest', date: '1 de Outubro, 2024' },
+    { id: 2, title: 'Carnaval do Rio', date: '20 de Fevereiro, 2024' },
+    { id: 3, title: 'Festival de Cannes', date: '14 de Maio, 2024' }
+  ];
+
+  const cards = [
+    { description: 'Shows', data: shows, color: '#292929', textColor: '#fff' },  
+    { description: 'Esportes', data: sports, color: '#699dfd', textColor: '#fff' }, 
+    { description: 'Festivais', data: festivals, color: '#7a43df', textColor: '#fff' } 
+  ];
+
+  const changeSlide = async e => {
+    const swiper = e.target.swiper;
+    const swiperIndex = swiper.activeIndex;
+
+    setPageTitle(cards[swiperIndex].description);
+    setMainColor(cards[swiperIndex].color); 
+    setButtonTextColor(cards[swiperIndex].textColor); 
+  };
+
+  const handlePurchase = (item) => {
+    // Pega os eventos existentes no localStorage
+    const existingEvents = JSON.parse(localStorage.getItem('purchasedEvents')) || [];
+    
+    // Adiciona o novo evento comprado
+    const updatedEvents = [...existingEvents, item];
+    
+    // Salva de volta no localStorage
+    localStorage.setItem('purchasedEvents', JSON.stringify(updatedEvents));
+
+    alert(`Ingresso para ${item.title} comprado com sucesso!`);
+  };
 
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>Tickets Disponíveis</IonTitle>
+        <IonToolbar className="custom-toolbar"> 
+          <IonTitle>{pageTitle}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      
+
       <IonContent>
-        {shows.map(show => (
-          <IonCard key={show.id}>
-            <IonCardHeader>
-              <IonCardTitle>{show.title}</IonCardTitle>
-              <IonCardSubtitle>{show.date}</IonCardSubtitle>
-            </IonCardHeader>
-            <IonCardContent>
-              Aproveite o melhor deste show e garanta já seu ingresso!
-              <IonButton expand="block" color="primary" style={{ marginTop: '10px' }}>
-                Comprar Ingresso
-              </IonButton>
-            </IonCardContent>
-          </IonCard>
-        ))}
+        <IonSlides onIonSlideDidChange={changeSlide} pager={true} options={{ initialSlide: 0, speed: 400 }}>
+          {cards.map((category, index) => (
+            <IonSlide key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              {category.data.map(item => (
+                <IonCard key={item.id} id={`slide_${index}_balance`} style={{ width: '90%', marginBottom: '20px' }}>
+                  <IonCardHeader>
+                    <IonCardTitle>{item.title}</IonCardTitle>
+                    <IonCardSubtitle>{item.date}</IonCardSubtitle>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    Aproveite o melhor deste {category.description.toLowerCase()} e garanta já seu ingresso!
+                    <IonButton
+                      expand="block"
+                      className="custom-button" 
+                      style={{
+                        marginTop: '10px'
+                      }}
+                      onClick={() => handlePurchase(item)} // Chamando a função para comprar o ingresso
+                    >
+                      Comprar Ingresso
+                    </IonButton>
+                  </IonCardContent>
+                </IonCard>
+              ))}
+            </IonSlide>
+          ))}
+        </IonSlides>
       </IonContent>
     </IonPage>
   );
