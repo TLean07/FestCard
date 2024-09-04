@@ -1,14 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel } from '@ionic/react';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
+import { getUserEvents } from '../data/FirestoreService';
+import { auth } from '../data/firebase-config';
 
 const Event = () => {
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
   useEffect(() => {
-    // Carrega os eventos comprados do localStorage
-    const purchasedEvents = JSON.parse(localStorage.getItem('purchasedEvents')) || [];
-    setEvents(purchasedEvents);
+    const fetchEvents = async () => {
+      setLoading(true);
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const userEvents = await getUserEvents(user.uid);
+          setEvents(userEvents);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar os eventos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
   }, []);
+
+  const goToMissions = (eventId) => {
+    history.push(`/missions/${eventId}`);
+  };
 
   return (
     <IonPage>
@@ -17,20 +39,23 @@ const Event = () => {
           <IonTitle>Meus Eventos</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        {events.length === 0 ? (
-          <p style={{ textAlign: 'center', marginTop: '20px' }}>Você não comprou nenhum ingresso ainda.</p>
-        ) : (
+      <IonContent className="ion-padding">
+        {loading ? (
+          <p>Carregando eventos...</p>
+        ) : events.length > 0 ? (
           <IonList>
-            {events.map((event, index) => (
-              <IonItem key={index}>
+            {events.map(event => (
+              <IonItem key={event.id}>
                 <IonLabel>
                   <h2>{event.title}</h2>
-                  <p>{event.date}</p>
+                  <p>Data: {new Date(event.date.seconds * 1000).toLocaleDateString()}</p>
                 </IonLabel>
+                <IonButton onClick={() => goToMissions(event.id)}>Ver Missões</IonButton>
               </IonItem>
             ))}
           </IonList>
+        ) : (
+          <p>Você ainda não tem eventos.</p>
         )}
       </IonContent>
     </IonPage>

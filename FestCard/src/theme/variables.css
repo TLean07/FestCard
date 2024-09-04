@@ -163,3 +163,7 @@ body.dark {
 .swiper-pagination {
   display: none !important;
 }
+
+.toolbar-avatar {
+  z-index: 1000;
+}

@@ -1,7 +1,7 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, IonIcon, IonLabel } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { homeOutline, personOutline, settingsOutline, ticketOutline } from 'ionicons/icons'; 
+import { homeOutline, ticketOutline, calendarOutline } from 'ionicons/icons';
 
 import Home from './pages/Home';
 import Account from './pages/Account';
@@ -13,6 +13,9 @@ import SetUsername from './pages/SetUsername';
 import Settings from './pages/Settings';
 import AddTransaction from './pages/AddTransaction';
 import Ticket from './pages/tickets';
+import Event from './pages/event';  
+import PurchaseConfirmation from './pages/PurchaseConfirmation'; 
+import Missions from './pages/Mission';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -33,26 +36,9 @@ const App = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet id="main">
+        {/* Rotas fora do IonTabs */}
         <Route path="/" exact={true}>
           <Redirect to="/splash" />
-        </Route>
-        <Route path="/home" exact={true}>
-          <Tabs />
-        </Route>
-        <Route path="/account" exact={true}>
-          <Tabs />
-        </Route>
-        <Route path="/ticket" exact={true}>
-          <Tabs />
-        </Route>
-        <Route path="/settings" exact={true}>
-          <Tabs />
-        </Route>
-        <Route path="/account/add-card" exact={true}>
-          <AddCard />
-        </Route>
-        <Route path="/add-transaction/:card_id" exact={true}>
-          <AddTransaction />
         </Route>
         <Route path="/login" exact={true}>
           <Login />
@@ -63,43 +49,62 @@ const App = () => (
         <Route path="/registrar" exact={true}>
           <Registrar />
         </Route>
-        <Route path="/set-username" exact={true}>
-          <SetUsername />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
-
-const Tabs = () => {
-  return (
-    <IonTabs>
-      <IonRouterOutlet>
-        <Route path="/home" exact={true}>
-          <Home />
+        <Route path="/settings" exact={true}>
+          <Settings />
         </Route>
         <Route path="/account" exact={true}>
           <Account />
         </Route>
-        <Route path="/ticket" exact={true}>
-          <Ticket />
-        </Route>
-        <Route path="/settings" exact={true}>
-          <Settings />
-        </Route>
+
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route path="/home" exact={true}>
+              <Home />
+            </Route>
+            <Route path="/ticket" exact={true}>
+              <Ticket />
+            </Route>
+            <Route path="/events" exact={true}>
+              <Event />
+            </Route>
+            <Route path="/purchase-confirmation" exact={true}>
+              <PurchaseConfirmation />
+            </Route>
+            <Route path="/account/add-card" exact={true}>
+              <AddCard />
+            </Route>
+            <Route path="/add-transaction/:card_id" exact={true}>
+              <AddTransaction />
+            </Route>
+            <Route path="/set-username" exact={true}>
+              <SetUsername />
+            </Route>
+            
+            <Route path="/missions/:eventId" exact={true}>
+              <Missions />
+            </Route>
+          </IonRouterOutlet>
+
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="home" href="/home">
+              <IonIcon icon={homeOutline} />
+              <IonLabel>Home</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab="ticket" href="/ticket">
+              <IonIcon icon={ticketOutline} />
+              <IonLabel>Tickets</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab="events" href="/events">
+              <IonIcon icon={calendarOutline} />
+              <IonLabel>Eventos</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
       </IonRouterOutlet>
-      <IonTabBar slot="bottom">
-        <IonTabButton tab="home" href="/home">
-          <IonIcon icon={homeOutline} />
-          <IonLabel>Home</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="ticket" href="/ticket">
-          <IonIcon icon={ticketOutline} />
-          <IonLabel>Ticket</IonLabel>
-        </IonTabButton>
-      </IonTabBar>
-    </IonTabs>
-  );
-};
+    </IonReactRouter>
+  </IonApp>
+);
 
 export default App;

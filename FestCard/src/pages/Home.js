@@ -96,6 +96,7 @@ const Home = () => {
                     </Swiper>
                 </IonGrid>
             </IonContent>
+           
         </IonPage>
     );
 };

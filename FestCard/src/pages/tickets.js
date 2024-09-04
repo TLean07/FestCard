@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonSlides, IonSlide } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
 
 const Ticket = () => {
   const [pageTitle, setPageTitle] = useState('Shows');
   const [mainColor, setMainColor] = useState('#292929'); 
   const [buttonTextColor, setButtonTextColor] = useState('#fff'); 
+  const history = useHistory();
 
   useEffect(() => {
     document.documentElement.style.setProperty('--main-color', mainColor);
@@ -45,16 +47,13 @@ const Ticket = () => {
   };
 
   const handlePurchase = (item) => {
-    // Pega os eventos existentes no localStorage
     const existingEvents = JSON.parse(localStorage.getItem('purchasedEvents')) || [];
     
-    // Adiciona o novo evento comprado
     const updatedEvents = [...existingEvents, item];
     
-    // Salva de volta no localStorage
     localStorage.setItem('purchasedEvents', JSON.stringify(updatedEvents));
 
-    alert(`Ingresso para ${item.title} comprado com sucesso!`);
+    history.push('/purchase-confirmation', { event: item });
   };
 
   return (
@@ -83,7 +82,7 @@ const Ticket = () => {
                       style={{
                         marginTop: '10px'
                       }}
-                      onClick={() => handlePurchase(item)} // Chamando a função para comprar o ingresso
+                      onClick={() => handlePurchase(item)} 
                     >
                       Comprar Ingresso
                     </IonButton>
@@ -94,6 +93,7 @@ const Ticket = () => {
           ))}
         </IonSlides>
       </IonContent>
+
     </IonPage>
   );
 };
