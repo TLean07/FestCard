@@ -33,7 +33,7 @@
 
 .cards {
 
-    /* margin-top:  */
+
 }
 
 .smallCard {
@@ -56,10 +56,11 @@
 
 .cardItem {
 
-    --background: rgb(246, 246, 246);
+    
     --border-radius: 5px;
     --padding-start: 1rem;
     --padding-end: 1rem;
     --padding-top: 0.5rem;
     --padding-bottom: 0.5rem;
 }
+

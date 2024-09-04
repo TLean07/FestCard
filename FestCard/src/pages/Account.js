@@ -71,12 +71,12 @@ const Account = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton color="dark" />
+            <IonBackButton/>
           </IonButtons>
           <IonTitle>Conta</IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={handleLogout}>
-              <IonIcon color="dark" icon={logOutOutline} />
+              <IonIcon icon={logOutOutline} />
             </IonButton>
           </IonButtons>
         </IonToolbar>

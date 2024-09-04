@@ -137,17 +137,17 @@ ion-footer ion-title {
 }
 
 :root {
-  --ion-background-color: #ffffff;
+  --ion-background-color: #fffdfdf5;
   --ion-text-color: #000000;
-  --ion-toolbar-background: #ffffff; 
+  --ion-toolbar-background: #fffdfdf5; 
   --ion-toolbar-color: #000000; 
   --ion-icon-color: #000000;
 }
 
 body.dark {
-  --ion-background-color: #000000;
+  --ion-background-color: #1a1818;
   --ion-text-color: #ffffff;
-  --ion-toolbar-background: #000000;
+  --ion-toolbar-background: #1a1818;
   --ion-toolbar-color: #ffffff;
   --ion-icon-color: #ffff;
 }
