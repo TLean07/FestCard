@@ -8,10 +8,11 @@ const Ticket = () => {
   const [buttonTextColor, setButtonTextColor] = useState('#fff'); 
   const history = useHistory();
 
+  // Dependências configuradas corretamente para evitar loops de renderização
   useEffect(() => {
     document.documentElement.style.setProperty('--main-color', mainColor);
     document.documentElement.style.setProperty('--button-text-color', buttonTextColor);
-  }, [mainColor, buttonTextColor]);
+  }, [mainColor, buttonTextColor]); // Certifique-se de que useEffect depende apenas de mainColor e buttonTextColor
 
   const shows = [
     { id: 1, title: 'Rock in Rio', date: '25 de Setembro, 2024' },
@@ -37,23 +38,22 @@ const Ticket = () => {
     { description: 'Festivais', data: festivals, color: '#7a43df', textColor: '#fff' } 
   ];
 
-  const changeSlide = async e => {
+  // Mudança de slide e atualização de cor apenas quando necessário
+  const changeSlide = (e) => {
     const swiper = e.target.swiper;
     const swiperIndex = swiper.activeIndex;
 
-    setPageTitle(cards[swiperIndex].description);
-    setMainColor(cards[swiperIndex].color); 
-    setButtonTextColor(cards[swiperIndex].textColor); 
+    // Verifique se o índice mudou antes de definir o estado, evitando re-renderizações desnecessárias
+    if (cards[swiperIndex].description !== pageTitle) {
+      setPageTitle(cards[swiperIndex].description);
+      setMainColor(cards[swiperIndex].color); 
+      setButtonTextColor(cards[swiperIndex].textColor); 
+    }
   };
 
   const handlePurchase = (item) => {
-    const existingEvents = JSON.parse(localStorage.getItem('purchasedEvents')) || [];
-    
-    const updatedEvents = [...existingEvents, item];
-    
-    localStorage.setItem('purchasedEvents', JSON.stringify(updatedEvents));
-
-    history.push('/purchase-confirmation', { event: item });
+    const category = item.title.includes('Rock') ? 'show' : item.title.includes('Copa') ? 'esporte' : 'festival';
+    history.push('/payment-choice', { event: { ...item, price: 100, category } });
   };
 
   return (
@@ -79,10 +79,8 @@ const Ticket = () => {
                     <IonButton
                       expand="block"
                       className="custom-button" 
-                      style={{
-                        marginTop: '10px'
-                      }}
-                      onClick={() => handlePurchase(item)} 
+                      style={{ marginTop: '10px' }}
+                      onClick={() => handlePurchase(item)}
                     >
                       Comprar Ingresso
                     </IonButton>
@@ -93,7 +91,6 @@ const Ticket = () => {
           ))}
         </IonSlides>
       </IonContent>
-
     </IonPage>
   );
 };

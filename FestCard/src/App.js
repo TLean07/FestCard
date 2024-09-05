@@ -16,6 +16,8 @@ import Ticket from './pages/tickets';
 import Event from './pages/event';  
 import PurchaseConfirmation from './pages/PurchaseConfirmation'; 
 import Missions from './pages/Mission';
+import PixDeposit from './pages/PixDeposit';
+import PaymentChoice from './pages/PaymentChoice';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -83,22 +85,31 @@ const App = () => (
             <Route path="/missions/:eventId" exact={true}>
               <Missions />
             </Route>
+
+            <Route path="/pix-deposit/:cardId" exact={true}>
+              <PixDeposit />
+            </Route>
+
+            <Route path="/payment-choice" exact={true}>
+              <PaymentChoice />
+            </Route>
+            
           </IonRouterOutlet>
 
           <IonTabBar slot="bottom">
             <IonTabButton tab="home" href="/home">
               <IonIcon icon={homeOutline} />
-              <IonLabel>Home</IonLabel>
+              <IonLabel></IonLabel>
             </IonTabButton>
 
             <IonTabButton tab="ticket" href="/ticket">
               <IonIcon icon={ticketOutline} />
-              <IonLabel>Tickets</IonLabel>
+              <IonLabel></IonLabel>
             </IonTabButton>
 
             <IonTabButton tab="events" href="/events">
               <IonIcon icon={calendarOutline} />
-              <IonLabel>Eventos</IonLabel>
+              <IonLabel></IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

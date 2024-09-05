@@ -5,23 +5,37 @@ import { useParams } from 'react-router-dom';
 const Missions = () => {
   const { eventId } = useParams();
 
-  // Exemplo de progresso para cada missão (valores de 0 a 1)
+  // Progresso da missão e FestCoins
   const [missionProgress, setMissionProgress] = useState({
     mission1: 0.7, // 70% completa
     mission2: 0.3, // 30% completa
   });
+  const [festCoinsEarned, setFestCoinsEarned] = useState(0);
 
-  // Exemplo de atualização de progresso (simulação)
+  // Simulação de progresso e ganho de FestCoins
   useEffect(() => {
     const interval = setInterval(() => {
-      setMissionProgress(prevProgress => ({
-        mission1: Math.min(prevProgress.mission1 + 0.01, 1),
-        mission2: Math.min(prevProgress.mission2 + 0.01, 1),
-      }));
+      setMissionProgress(prevProgress => {
+        const updatedMission1 = Math.min(prevProgress.mission1 + 0.01, 1);
+        const updatedMission2 = Math.min(prevProgress.mission2 + 0.01, 1);
+
+        // Ganhar FestCoins ao completar a missão
+        if (updatedMission1 === 1 && festCoinsEarned < 50) {
+          setFestCoinsEarned(festCoinsEarned + 50); // 50 FestCoins para missão 1
+        }
+        if (updatedMission2 === 1 && festCoinsEarned < 100) {
+          setFestCoinsEarned(festCoinsEarned + 50); // 50 FestCoins para missão 2
+        }
+
+        return {
+          mission1: updatedMission1,
+          mission2: updatedMission2,
+        };
+      });
     }, 1000); // Atualiza a cada 1 segundo
 
-    return () => clearInterval(interval); // Limpa o intervalo ao desmontar
-  }, []);
+    return () => clearInterval(interval);
+  }, [festCoinsEarned]);
 
   return (
     <IonPage>
@@ -41,6 +55,10 @@ const Missions = () => {
             <IonProgressBar value={missionProgress.mission2} color={missionProgress.mission2 === 1 ? 'success' : 'primary'}></IonProgressBar>
           </IonItem>
         </IonList>
+
+        <IonItem>
+          <IonLabel>FestCoins Obtidas: {festCoinsEarned}</IonLabel>
+        </IonItem>
       </IonContent>
     </IonPage>
   );

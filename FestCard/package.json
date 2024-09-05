@@ -26,6 +26,7 @@
     "ionicons": "^5.5.4",
     "node": "^20.17.0",
     "pullstate": "^1.25.0",
+    "qrcode.react": "^4.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",

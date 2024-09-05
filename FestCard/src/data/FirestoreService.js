@@ -1,7 +1,6 @@
 import { doc, getDoc, collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from './firebase-config';
 
-// Função para obter o perfil do usuário
 export const getUserProfile = async (userId) => {
   const userRef = doc(db, "users", userId);
   const docSnap = await getDoc(userRef);
