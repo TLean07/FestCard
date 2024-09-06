@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle } from '@ionic/react';
 import { useHistory, useLocation } from 'react-router-dom';
 
@@ -11,30 +11,33 @@ const PaymentChoice = () => {
   const [cardBalance, setCardBalance] = useState(500); // Exemplo de saldo inicial do cartão
   const [error, setError] = useState(null); // Estado para erros
 
-  if (!event) {
-    history.replace('/ticket');
-    return null;
-  }
+  useEffect(() => {
+    if (!event) {
+      history.replace('/ticket');
+    }
+  }, [event, history]);
 
-  // Função para verificar o saldo de FestCoins e realizar a compra
   const handleFestCoinPurchase = () => {
     if (festCoins >= event.price) {
       setFestCoins(festCoins - event.price);
-      history.push('/purchase-confirmation', { event });
+      history.push('/purchase-confirmation', { event }); // Apenas redireciona, não salva aqui
     } else {
-      if (!error) setError('Saldo insuficiente de FestCoins'); // Atualiza o estado apenas se não houver erro anterior
+      if (!error) setError('Saldo insuficiente de FestCoins');
     }
   };
 
-  // Função para verificar o saldo do cartão e realizar a compra
   const handleCardPurchase = () => {
     if (cardBalance >= event.price) {
       setCardBalance(cardBalance - event.price);
-      history.push('/purchase-confirmation', { event });
+      history.push('/purchase-confirmation', { event }); // Apenas redireciona, não salva aqui
     } else {
-      if (!error) setError('Saldo insuficiente no cartão'); // Atualiza o estado apenas se não houver erro anterior
+      if (!error) setError('Saldo insuficiente no cartão');
     }
   };
+
+  if (!event) {
+    return null;
+  }
 
   return (
     <IonPage>
@@ -44,9 +47,7 @@ const PaymentChoice = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        {error && (
-          <p style={{ color: 'red', textAlign: 'center' }}>{error}</p> // Exibe o erro
-        )}
+        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>{event.title}</IonCardTitle>

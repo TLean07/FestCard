@@ -4,15 +4,14 @@ import { useHistory } from 'react-router-dom';
 
 const Ticket = () => {
   const [pageTitle, setPageTitle] = useState('Shows');
-  const [mainColor, setMainColor] = useState('#292929'); 
-  const [buttonTextColor, setButtonTextColor] = useState('#fff'); 
+  const [mainColor, setMainColor] = useState('#292929');
+  const [buttonTextColor, setButtonTextColor] = useState('#fff');
   const history = useHistory();
 
-  // Dependências configuradas corretamente para evitar loops de renderização
   useEffect(() => {
     document.documentElement.style.setProperty('--main-color', mainColor);
     document.documentElement.style.setProperty('--button-text-color', buttonTextColor);
-  }, [mainColor, buttonTextColor]); // Certifique-se de que useEffect depende apenas de mainColor e buttonTextColor
+  }, [mainColor, buttonTextColor]);
 
   const shows = [
     { id: 1, title: 'Rock in Rio', date: '25 de Setembro, 2024' },
@@ -33,21 +32,19 @@ const Ticket = () => {
   ];
 
   const cards = [
-    { description: 'Shows', data: shows, color: '#292929', textColor: '#fff' },  
-    { description: 'Esportes', data: sports, color: '#699dfd', textColor: '#fff' }, 
-    { description: 'Festivais', data: festivals, color: '#7a43df', textColor: '#fff' } 
+    { description: 'Shows', data: shows, color: '#292929', textColor: '#fff' },
+    { description: 'Esportes', data: sports, color: '#699dfd', textColor: '#fff' },
+    { description: 'Festivais', data: festivals, color: '#7a43df', textColor: '#fff' }
   ];
 
-  // Mudança de slide e atualização de cor apenas quando necessário
   const changeSlide = (e) => {
     const swiper = e.target.swiper;
     const swiperIndex = swiper.activeIndex;
 
-    // Verifique se o índice mudou antes de definir o estado, evitando re-renderizações desnecessárias
     if (cards[swiperIndex].description !== pageTitle) {
       setPageTitle(cards[swiperIndex].description);
-      setMainColor(cards[swiperIndex].color); 
-      setButtonTextColor(cards[swiperIndex].textColor); 
+      setMainColor(cards[swiperIndex].color);
+      setButtonTextColor(cards[swiperIndex].textColor);
     }
   };
 
@@ -59,7 +56,7 @@ const Ticket = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar className="custom-toolbar"> 
+        <IonToolbar className="custom-toolbar">
           <IonTitle>{pageTitle}</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -78,7 +75,7 @@ const Ticket = () => {
                     Aproveite o melhor deste {category.description.toLowerCase()} e garanta já seu ingresso!
                     <IonButton
                       expand="block"
-                      className="custom-button" 
+                      className="custom-button"
                       style={{ marginTop: '10px' }}
                       onClick={() => handlePurchase(item)}
                     >

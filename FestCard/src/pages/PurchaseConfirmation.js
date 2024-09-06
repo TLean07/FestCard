@@ -1,38 +1,60 @@
-import React, { useEffect } from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonToast } from '@ionic/react';
+import { useLocation, useHistory } from 'react-router-dom';
+import { addUserEvent } from '../data/FirestoreService'; // Função para adicionar evento no Firestore
+import { auth } from '../data/firebase-config'; // Firebase Auth para obter o ID do usuário
 
 const PurchaseConfirmation = () => {
-  const history = useHistory();
   const location = useLocation();
+  const history = useHistory();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [hasSaved, setHasSaved] = useState(false); // Estado para garantir que o evento seja salvo apenas uma vez
 
   // Verifique se o evento foi passado corretamente
   const { event } = location.state || {};
 
   useEffect(() => {
-    // Se não há evento, redireciona para /ticket, mas apenas se já não estiver em /ticket
-    if (!event && history.location.pathname !== '/ticket') {
-      history.replace('/ticket');
-    }
-  }, [event, history]);
+    const handleSaveEvent = async () => {
+      const user = auth.currentUser;
 
-  const handleViewEvents = () => {
-    // Navega para /events apenas se já não estiver nessa rota
-    if (history.location.pathname !== '/events') {
-      history.push('/events');
+      if (event && user && !hasSaved) {
+        try {
+          await addUserEvent(user.uid, event); // Salvando o evento apenas uma vez
+          setToastMessage('Evento salvo com sucesso!');
+          setHasSaved(true); // Marcar como salvo
+        } catch (error) {
+          console.error('Erro ao salvar o evento:', error);
+          setToastMessage('Erro ao salvar o evento.');
+        } finally {
+          setShowToast(true);
+        }
+      }
+    };
+
+    if (event && !hasSaved) {
+      handleSaveEvent(); // Chama a função de salvar o evento uma vez
     }
-  };
+  }, [event, hasSaved]);
 
   const handleBuyMoreTickets = () => {
-    // Navega para /ticket apenas se já não estiver nessa rota
-    if (history.location.pathname !== '/ticket') {
-      history.push('/ticket');
-    }
+    // Navega para /ticket para continuar comprando sem recarregar a página
+    history.push('/ticket');
   };
 
-  // Se o redirecionamento para /ticket ocorrer, não renderiza o conteúdo
   if (!event) {
-    return null;
+    return (
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>Confirmação de Compra</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding">
+          <h2>Nenhum evento disponível!</h2>
+        </IonContent>
+      </IonPage>
+    );
   }
 
   return (
@@ -48,17 +70,20 @@ const PurchaseConfirmation = () => {
         <p><strong>{event?.title}</strong></p>
         <p>Data: {event?.date}</p>
 
-        <IonButton onClick={handleViewEvents} expand="block" className="ion-margin-top">
-          Ver Meus Eventos
-        </IonButton>
-        
         <IonButton onClick={handleBuyMoreTickets} expand="block" color="medium" className="ion-margin-top">
-          Comprar Outro Ingresso
+          Continuar Comprando
         </IonButton>
+
+        {/* Toast de notificação para erros/sucesso */}
+        <IonToast
+          isOpen={showToast}
+          message={toastMessage}
+          duration={3000}
+          onDidDismiss={() => setShowToast(false)}
+        />
       </IonContent>
     </IonPage>
   );
 };
 
 export default PurchaseConfirmation;
- 

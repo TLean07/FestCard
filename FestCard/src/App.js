@@ -66,7 +66,7 @@ const App = () => (
             <Route path="/ticket" exact={true}>
               <Ticket />
             </Route>
-            <Route path="/events" exact={true}>
+            <Route path="/events" component={Event} >
               <Event />
             </Route>
             <Route path="/purchase-confirmation" exact={true}>
