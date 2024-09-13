@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IonContent, IonInput, IonButton, IonText, IonIcon } from '@ionic/react';
-import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signOut, fetchSignInMethodsForEmail } from 'firebase/auth';
 import { auth } from '../data/firebase-config';
 import { useHistory } from 'react-router-dom'; 
 import { personOutline, lockClosedOutline, arrowBackOutline } from 'ionicons/icons';
@@ -15,29 +15,50 @@ const Registrar = () => {
   const [error, setError] = useState('');
   const history = useHistory(); 
 
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleRegister = async () => {
     try {
+      if (!isValidEmail(email)) {
+        setError('Formato de e-mail inválido.');
+        return;
+      }
+
+      const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+      if (signInMethods.length > 0) {
+        setError('Este e-mail já está registrado. Por favor, faça login.');
+        return;
+      }
+
       if (password.length < 8) {
         setError('A senha deve ter no mínimo 8 caracteres.');
         return;
       }
+
       if (password !== confirmPassword) {
         setError('As senhas não coincidem.');
         return;
       }
-      
-      const credential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('Usuário registrado:', credential.user);
- 
-      const nameParts = username.split(" ");
+
+      const nameParts = username.trim().split(" ");
+      if (nameParts.length < 2) {
+        setError('Por favor, insira o nome e o sobrenome.');
+        return;
+      }
+
       const firstname = nameParts[0];
       const surname = nameParts.slice(1).join(" ");
+
+      const credential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('Usuário registrado:', credential.user);
+
       updateProfileName(firstname, surname);
 
-      // Logout automático após o registro para redirecionar para a página de login
       await signOut(auth);
 
-      // Redireciona para a página de login
       history.push('/login');
     } catch (error) {
       console.error('Erro ao registrar:', error.message);
@@ -59,7 +80,7 @@ const Registrar = () => {
         <div className="register-container">
           <IonInput
             type="text"
-            placeholder="Usuário"
+            placeholder="Nome Completo"
             className="senha-ion-input-custom"
             clearInput
             value={username}
