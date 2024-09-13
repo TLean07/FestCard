@@ -18,6 +18,7 @@ import PurchaseConfirmation from './pages/PurchaseConfirmation';
 import Missions from './pages/Mission';
 import PixDeposit from './pages/PixDeposit';
 import PaymentChoice from './pages/PaymentChoice';
+import NfcTransaction from './pages/NfcTransaction'; // Nova página NFC
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -66,7 +67,7 @@ const App = () => (
             <Route path="/ticket" exact={true}>
               <Ticket />
             </Route>
-            <Route path="/events" component={Event} >
+            <Route path="/events" component={Event}>
               <Event />
             </Route>
             <Route path="/purchase-confirmation" exact={true}>
@@ -81,7 +82,7 @@ const App = () => (
             <Route path="/set-username" exact={true}>
               <SetUsername />
             </Route>
-            
+
             <Route path="/missions/:eventId" exact={true}>
               <Missions />
             </Route>
@@ -93,7 +94,12 @@ const App = () => (
             <Route path="/payment-choice" exact={true}>
               <PaymentChoice />
             </Route>
-            
+
+            {/* Nova rota para NFC Transaction */}
+            <Route path="/nfc-transaction/:card_id" exact={true}>
+              <NfcTransaction />
+            </Route>
+
           </IonRouterOutlet>
 
           <IonTabBar slot="bottom">
