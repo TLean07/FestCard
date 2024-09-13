@@ -6,10 +6,12 @@ const DebitCard = (props) => {
   const [lastFourCardNumbers, setLastFourCardNumbers] = useState("****");
 
   const cardClass = `card_${color}`;
-  const cardTypeLogo = type === "visa" ? "/visa.png" : "/mastercard.png";
+
+  // Definir o logo do cartão com base no tipo, com "Unknown" exibindo "/icon.png"
+  const cardTypeLogo = type === "Visa" ? "/visa.png" : type === "Mastercard" ? "/mastercard.png" : "/icon.png";
 
   useEffect(() => {
-    var lastFourNumbers = number ? number.substr(number.length - 4) : "1234";
+    const lastFourNumbers = number ? number.substr(number.length - 4) : "1234";
     setLastFourCardNumbers(lastFourNumbers);
   }, [number]);
 
@@ -18,7 +20,10 @@ const DebitCard = (props) => {
       <div className={`${styles.card__front} ${styles.card__part} ${styles[cardClass]}`}>
         <img className={`${styles.card__front_chip} ${styles.card__square}`} src="/chip.png" alt="Chip" />
         <img className={`${styles.card__front_square} ${styles.card__square}`} src="/icon3.png" alt="Logo" />
+        
+        {/* Exibir a logo do tipo de cartão */}
         <img className={`${styles.card__front_logo} ${styles.card__logo}`} src={cardTypeLogo} alt="Card Type Logo" />
+        
         <p className={styles.card_number}>**** **** **** {lastFourCardNumbers}</p>
         <div className={styles.card__space_75}>
           <span className={styles.card__label}>Titular do Cartão</span>
@@ -41,6 +46,8 @@ const DebitCard = (props) => {
           </div>
 
           <img className={`${styles.card__back_square} ${styles.card__square}`} src="/icon3.png" alt="Logo" />
+          
+          {/* Exibir a logo do tipo de cartão no verso */}
           <img className={`${styles.card__back_logo} ${styles.card__logo}`} src={cardTypeLogo} alt="Card Type Logo" />
         </div>
       </div>
