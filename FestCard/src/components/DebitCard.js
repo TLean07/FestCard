@@ -17,6 +17,7 @@ const DebitCard = (props) => {
 
   return (
     <div className={styles.card}>
+      {/* Parte da frente do cartão */}
       <div className={`${styles.card__front} ${styles.card__part} ${styles[cardClass]}`}>
         <img className={`${styles.card__front_chip} ${styles.card__square}`} src="/chip.png" alt="Chip" />
         <img className={`${styles.card__front_square} ${styles.card__square}`} src="/icon3.png" alt="Logo" />
@@ -24,7 +25,9 @@ const DebitCard = (props) => {
         {/* Exibir a logo do tipo de cartão */}
         <img className={`${styles.card__front_logo} ${styles.card__logo}`} src={cardTypeLogo} alt="Card Type Logo" />
         
+        {/* Número do cartão */}
         <p className={styles.card_number}>**** **** **** {lastFourCardNumbers}</p>
+
         <div className={styles.card__space_75}>
           <span className={styles.card__label}>Titular do Cartão</span>
           <p className={styles.card__info}>
@@ -32,16 +35,20 @@ const DebitCard = (props) => {
             {profile && profile.surname ? profile.surname : "Sobrenome"}
           </p>
         </div>
+
+        {/* Validade do cartão */}
         <div className={styles.card__space_25}>
           <span className={styles.card__label}>Expirar</span>
           <p className={styles.card__info}>{expiry}</p>
         </div>
       </div>
 
+      {/* Parte de trás do cartão */}
       <div className={`${styles.card__back} ${styles.card__part} ${styles[cardClass]}`}>
         <div className={styles.card__black_line}></div>
         <div className={styles.card__back_content}>
           <div className={styles.card__secret}>
+            <span className={styles.card__label}>CVV</span>
             <p className={styles.card__secret__last}>{secret}</p>
           </div>
 
