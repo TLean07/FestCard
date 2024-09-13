@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonTitle, IonToolbar, IonToast } from '@ionic/react';
 import styles from "./Account.module.css";
 import DebitCard from '../components/DebitCard';
 import { AccountStore, addCardToAccount } from '../data/AccountStore';
@@ -10,11 +10,10 @@ import { useHistory } from 'react-router';
 const AddCard = () => {
 
   	const cards = AccountStore.useState(s => s.cards);
-  	const cardTypes = CardStore.useState(s => s.card_types);
   	const cardColors = CardStore.useState(s => s.card_colors);
 	const profile = AccountStore.useState(s => s.profile);
 
-    const [ cardType, setCardType ] = useState(cardTypes[0]);
+    const [ cardType, setCardType ] = useState("Unknown");
     const [ cardColor, setCardColor ] = useState(cardColors[0]);
     const [ cardDescription, setCardDescription ] = useState("");
     const [ cardNumber, setCardNumber ] = useState("1234 1234 1234 1234");
@@ -24,13 +23,71 @@ const AddCard = () => {
 
     const history = useHistory();
     const [ adding, setAdding ] = useState(false);
+    const [ showToast, setShowToast ] = useState({ show: false, message: '' });
+
+    const validateCardNumber = (number) => {
+        // Remove espaços em branco
+        const cleanedNumber = number.replace(/\s+/g, '');
+
+        // Verifica se o número tem 16 dígitos
+        if (cleanedNumber.length !== 16 || isNaN(cleanedNumber)) {
+            return false;
+        }
+
+        // Implementação do Algoritmo de Luhn
+        let sum = 0;
+        let shouldDouble = false;
+
+        for (let i = cleanedNumber.length - 1; i >= 0; i--) {
+            let digit = parseInt(cleanedNumber[i]);
+
+            if (shouldDouble) {
+                digit *= 2;
+                if (digit > 9) {
+                    digit -= 9;
+                }
+            }
+
+            sum += digit;
+            shouldDouble = !shouldDouble;
+        }
+
+        return sum % 10 === 0;
+    };
+
+    const identifyCardType = (number) => {
+        const cleanedNumber = number.replace(/\s+/g, '');
+
+        // Identifica se é Visa ou Mastercard
+        if (cleanedNumber.startsWith('4')) {
+            setCardType("Visa");
+        } else if (
+            (cleanedNumber.startsWith('51') || cleanedNumber.startsWith('52') || 
+            cleanedNumber.startsWith('53') || cleanedNumber.startsWith('54') || 
+            cleanedNumber.startsWith('55')) ||
+            (parseInt(cleanedNumber.substring(0, 4)) >= 2221 && parseInt(cleanedNumber.substring(0, 4)) <= 2720)
+        ) {
+            setCardType("Mastercard");
+        } else {
+            setCardType("Unknown");
+        }
+    };
+
+    const handleCardNumberChange = (e) => {
+        const newCardNumber = e.currentTarget.value;
+        setCardNumber(newCardNumber);
+        identifyCardType(newCardNumber);
+    };
 
     const addCard = async () => {
+        if (!validateCardNumber(cardNumber)) {
+            setShowToast({ show: true, message: 'Número do cartão inválido.' });
+            return;
+        }
 
         setAdding(true);
 
         const newCard = {
-
             id: cards.length + 1,
             type: cardType,
             color: cardColor,
@@ -51,29 +108,24 @@ const AddCard = () => {
         await addCardToAccount(newCard);
         
         setTimeout(() => {
-            
             setAdding(false);
             history.goBack();
         }, 500);
-    }
+    };
 
 	return (
 		<IonPage className={ styles.accountPage }>
 			<IonHeader>
 				<IonToolbar>
-
 					<IonButtons slot="start">
                         <IonBackButton color="dark" />
 					</IonButtons>
-
 					<IonTitle>Adicionar Cartão</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			
 			<IonContent fullscreen>
-
 				<IonGrid>
-
                     <IonRow className="animate__animated animate__fadeInTopLeft animate__faster ion-justify-content-center ion-text-center">
                         <IonCol size="12" className="ion-justify-content-center ion-text-center">
                             <DebitCard color={ cardColor } type={ cardType } expiry={ cardExpiry } number={ cardNumber } secret={ cardSecret } profile={ profile } />
@@ -83,15 +135,8 @@ const AddCard = () => {
                     <IonRow className="ion-padding-top">
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Tipo de Cartão</IonLabel>
-                                <IonSelect placeholder="Select type" value={ cardType } onIonChange={ e => setCardType(e.currentTarget.value) }>
-                                    { cardTypes.map((option, index) => {
-
-                                        return <IonSelectOption key={ index } value={ option }>
-                                            { option.toUpperCase() }
-                                        </IonSelectOption>
-                                    })}
-                                </IonSelect> 
+                                <IonLabel position="floating">Tipo de Cartão (Detectado)</IonLabel>
+                                <IonInput type="text" inputmode="text" value={ cardType } readonly />
                             </IonItem>
                         </IonCol>
 
@@ -99,12 +144,11 @@ const AddCard = () => {
                             <IonItem lines="full">
                                 <IonLabel position="floating">Cor do Cartão</IonLabel>
                                 <IonSelect placeholder="Select color" value={ cardColor } onIonChange={ e => setCardColor(e.currentTarget.value) }>
-                                    { cardColors.map((option, index) => {
-
-                                        return <IonSelectOption key={ index } value={ option }>
+                                    { cardColors.map((option, index) => (
+                                        <IonSelectOption key={ index } value={ option }>
                                             { option.toUpperCase() }
                                         </IonSelectOption>
-                                    })}
+                                    ))}
                                 </IonSelect> 
                             </IonItem>
                         </IonCol>
@@ -130,7 +174,7 @@ const AddCard = () => {
                         <IonCol size="12">
                             <IonItem lines="full">
                                 <IonLabel position="floating">Número do Cartão</IonLabel>
-                                <IonInput type="text" inputmode="text" placeholder="**** **** **** ****" value={ cardNumber } onIonChange={ e => setCardNumber(e.currentTarget.value) } />
+                                <IonInput type="text" inputmode="text" placeholder="**** **** **** ****" value={ cardNumber } onIonChange={ handleCardNumberChange } />
                             </IonItem>
                         </IonCol>
                     </IonRow>
@@ -152,9 +196,8 @@ const AddCard = () => {
                     </IonRow>
 
                     <IonRow>
-
                         <IonCol size="12">
-                            <IonButton style={{ "--background": cardColor, "--background-focused": cardColor, "--background-hover": cardColor, "--background-activated": cardColor }} expand="block" disabled={ adding } onClick={ addCard }>
+                            <IonButton style={{ "--background": cardColor }} expand="block" disabled={ adding } onClick={ addCard }>
                                 { !adding &&
                                     <>
                                         <IonIcon icon={ addOutline } />
@@ -170,8 +213,15 @@ const AddCard = () => {
                                 }
                             </IonButton>
                         </IonCol>
-                    </IonRow>         
+                    </IonRow>   
 				</IonGrid>
+
+                <IonToast
+                    isOpen={showToast.show}
+                    message={showToast.message}
+                    duration={2000}
+                    onDidDismiss={() => setShowToast({ show: false, message: '' })}
+                />
 			</IonContent>
 		</IonPage>
 	);
