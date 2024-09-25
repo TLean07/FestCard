@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton } from '@ionic/react';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonSlides, IonSlide } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-
 
 const Ticket = () => {
   const [pageTitle, setPageTitle] = useState('Shows');
@@ -42,7 +37,8 @@ const Ticket = () => {
     { description: 'Festivais', data: festivals, color: '#7a43df', textColor: '#fff' }
   ];
 
-  const changeSlide = (swiper) => {
+  const changeSlide = (e) => {
+    const swiper = e.target.swiper;
     const swiperIndex = swiper.activeIndex;
 
     if (cards[swiperIndex].description !== pageTitle) {
@@ -66,9 +62,9 @@ const Ticket = () => {
       </IonHeader>
 
       <IonContent>
-        <Swiper onSlideChange={changeSlide} pagination={{ clickable: true }} spaceBetween={50} slidesPerView={1}>
+        <IonSlides onIonSlideDidChange={changeSlide} pager={true} options={{ initialSlide: 0, speed: 400 }}>
           {cards.map((category, index) => (
-            <SwiperSlide key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <IonSlide key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               {category.data.map(item => (
                 <IonCard key={item.id} id={`slide_${index}_balance`} style={{ width: '90%', marginBottom: '20px' }}>
                   <IonCardHeader>
@@ -88,9 +84,9 @@ const Ticket = () => {
                   </IonCardContent>
                 </IonCard>
               ))}
-            </SwiperSlide>
+            </IonSlide>
           ))}
-        </Swiper>
+        </IonSlides>
       </IonContent>
     </IonPage>
   );
