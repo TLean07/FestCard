@@ -8,6 +8,8 @@ export const AccountStore = new Store({
         surname: "",
         avatar: "/User.png",
         isUsernameSet: false,
+        festCoins: 0, // Adicionando o campo de FestCoins
+        balance: 0,  // Saldo em dinheiro
     },
     cards: [],
 });
@@ -27,6 +29,8 @@ export const loadUserData = async (updateLocalState = true) => {
         surname: "",
         avatar: "/User.png",
         isUsernameSet: false,
+        festCoins: 0,  // FestCoins inicializado
+        balance: 0,  // Saldo em dinheiro inicializado
     };
 
     if (profileDoc.exists()) {
@@ -65,7 +69,11 @@ export const saveUserData = async () => {
 
     try {
         const userProfileRef = doc(db, "users", userId);
-        await setDoc(userProfileRef, profile, { merge: true });
+        await setDoc(userProfileRef, {
+            ...profile, // Mantém o perfil
+            festCoins: profile.festCoins, // Atualiza o saldo de FestCoins
+            balance: profile.balance, // Atualiza o saldo em dinheiro
+        }, { merge: true });
 
         for (const card of cards) {
             const cardRef = doc(db, "users", userId, "cards", card.id);
@@ -130,4 +138,18 @@ export const autoSaveChanges = () => {
         }
     });
     return unsubscribe; // Retorna a função para remover o listener quando necessário
+};
+
+export const updateFestCoins = (amount) => {
+    AccountStore.update(s => {
+        s.profile.festCoins = s.profile.festCoins - amount;
+    });
+    saveUserData(); // Salva automaticamente no Firestore após atualização do saldo de FestCoins
+};
+
+export const updateBalance = (amount) => {
+    AccountStore.update(s => {
+        s.profile.balance = s.profile.balance - amount;
+    });
+    saveUserData(); // Salva automaticamente no Firestore após atualização do saldo em dinheiro
 };

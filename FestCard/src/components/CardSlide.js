@@ -7,11 +7,13 @@ import styles from "./CardSlide.module.css";
 import TransactionItem from "./TransactionItem";
 import { addOutline, arrowRedoOutline, cashOutline, qrCodeOutline } from "ionicons/icons";
 import { formatBalance } from "../data/Utils";
+import { AccountStore } from "../data/AccountStore"; // Adicionado para FestCoins
 
 const CardSlide = (props) => {
   const { index, card, profile } = props;
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const festCoins = AccountStore.useState(s => s.profile.festCoins); // Pegando o saldo de FestCoins
 
   const handleNfcPayment = async () => {
     try {
@@ -54,16 +56,25 @@ const CardSlide = (props) => {
     <>
       <IonRow className="ion-text-center">
         <IonCol size="12">
-          <IonCardSubtitle color="medium">Saldo</IonCardSubtitle>
+          <IonCardSubtitle color="medium">Saldo (R$)</IonCardSubtitle>
           <IonCardSubtitle
             id={`slide_${index}_balance`}
             className={`${styles.balance} animate__animated`}
           >
-            <span className={styles.poundSign}></span>
-            &nbsp;{formatBalance(card.balance)}
+            {formatBalance(card.balance)}
+          </IonCardSubtitle>
+
+          <IonCardSubtitle color="medium">Saldo (FestCoins)</IonCardSubtitle>
+          <IonCardSubtitle
+            id={`slide_${index}_festCoins`}
+            className={`${styles.balance} animate__animated`}
+          >
+            <img src="/icon.png" alt="FestCoins" style={{ width: "20px", marginRight: "5px" }} />
+            {festCoins} FestCoins
           </IonCardSubtitle>
         </IonCol>
       </IonRow>
+
       <IonRow
         id={`card_${index}_container`}
         className="animate__animated ion-text-center ion-justify-content-center"
@@ -100,7 +111,7 @@ const CardSlide = (props) => {
               "--background-hover": card.color,
               "--background-activated": card.color,
             }}
-            routerLink={`/nfc-transaction/${card.id}`} // Redireciona para a página NFC
+            routerLink={`/nfc-transaction/${card.id}`}
           >
             <IonIcon icon={cashOutline} />
             Pagar com Aproximação
@@ -131,10 +142,7 @@ const CardSlide = (props) => {
       </IonRow>
 
       {card.transactions.length > 0 && (
-        <IonRow
-          id={`slide_${index}_transactions`}
-          className="animate__animated"
-        >
+        <IonRow id={`slide_${index}_transactions`} className="animate__animated">
           <IonCol size="12">
             <IonList className={styles.transactionList}>
               {card.transactions
@@ -153,16 +161,10 @@ const CardSlide = (props) => {
       )}
 
       {card.transactions.length === 0 && (
-        <IonRow
-          id={`slide_${index}_transactions`}
-          className="animate__animated"
-        >
+        <IonRow id={`slide_${index}_transactions`} className="animate__animated">
           <IonCol size="12">
             <h5>Sem fundos para Transação</h5>
-            <IonButton
-              style={{ "--background": card.color }}
-              routerLink={`/add-transaction/${card.id}`}
-            >
+            <IonButton style={{ "--background": card.color }} routerLink={`/add-transaction/${card.id}`}>
               <IonIcon icon={arrowRedoOutline} />
               &nbsp;Adicionar Fundos
             </IonButton>

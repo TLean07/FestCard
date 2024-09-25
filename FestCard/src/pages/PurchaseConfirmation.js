@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonToast } from '@ionic/react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { addUserEvent } from '../data/FirestoreService'; 
-import { auth } from '../data/firebase-config'; 
+import { addUserEvent } from '../data/FirestoreService';
+import { auth } from '../data/firebase-config';
 
 const PurchaseConfirmation = () => {
   const location = useLocation();
@@ -10,8 +10,6 @@ const PurchaseConfirmation = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [hasSaved, setHasSaved] = useState(false); 
-
- 
   const { event } = location.state || {};
 
   useEffect(() => {
@@ -20,6 +18,7 @@ const PurchaseConfirmation = () => {
 
       if (event && user && !hasSaved) {
         try {
+          // Salvando o evento no Firestore
           await addUserEvent(user.uid, event); 
           setToastMessage('Evento salvo com sucesso!');
           setHasSaved(true);

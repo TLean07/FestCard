@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle } from '@ionic/react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { AccountStore, updateFestCoins, updateBalance } from '../data/AccountStore';
 
 const PaymentChoice = () => {
   const history = useHistory();
   const location = useLocation();
   const { event } = location.state || {};
-
-  const [festCoins, setFestCoins] = useState(100); // Quantidade inicial de FestCoins do usuário
-  const [cardBalance, setCardBalance] = useState(500); // Exemplo de saldo inicial do cartão
-  const [error, setError] = useState(null); // Estado para erros
+  const festCoins = AccountStore.useState(s => s.profile.festCoins);
+  const balance = AccountStore.useState(s => s.profile.balance);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!event) {
@@ -19,19 +19,19 @@ const PaymentChoice = () => {
 
   const handleFestCoinPurchase = () => {
     if (festCoins >= event.price) {
-      setFestCoins(festCoins - event.price);
-      history.push('/purchase-confirmation', { event }); // Apenas redireciona, não salva aqui
+      updateFestCoins(event.price); // Deduz o valor de FestCoins
+      history.push('/purchase-confirmation', { event });
     } else {
-      if (!error) setError('Saldo insuficiente de FestCoins');
+      setError('Saldo insuficiente de FestCoins');
     }
   };
 
   const handleCardPurchase = () => {
-    if (cardBalance >= event.price) {
-      setCardBalance(cardBalance - event.price);
-      history.push('/purchase-confirmation', { event }); // Apenas redireciona, não salva aqui
+    if (balance >= event.price) {
+      updateBalance(event.price); // Deduz o valor em dinheiro
+      history.push('/purchase-confirmation', { event });
     } else {
-      if (!error) setError('Saldo insuficiente no cartão');
+      setError('Saldo insuficiente no cartão');
     }
   };
 
@@ -47,7 +47,7 @@ const PaymentChoice = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>{event.title}</IonCardTitle>
@@ -61,7 +61,7 @@ const PaymentChoice = () => {
         </IonButton>
 
         <IonButton expand="block" color="secondary" onClick={handleCardPurchase} style={{ marginTop: '20px' }}>
-          Pagar com Saldo do Cartão (Saldo: {cardBalance})
+          Pagar com Saldo do Cartão (Saldo: {balance})
         </IonButton>
       </IonContent>
     </IonPage>
