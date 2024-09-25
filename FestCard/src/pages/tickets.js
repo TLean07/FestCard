@@ -6,6 +6,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
+
 const Ticket = () => {
   const [pageTitle, setPageTitle] = useState('Shows');
   const [mainColor, setMainColor] = useState('#292929');
