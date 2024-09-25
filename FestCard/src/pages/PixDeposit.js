@@ -12,7 +12,7 @@ const PixDeposit = () => {
     const cards = AccountStore.useState((s) => s.cards); 
     const [amount, setAmount] = useState(""); 
     const [generatedQR, setGeneratedQR] = useState(null); 
-    const [pixKey, setPixKey] = useState(""); // Chave Pix gerada dinamicamente
+    const [pixKey, setPixKey] = useState(""); 
     const [showToast, setShowToast] = useState(false); 
     const [toastMessage, setToastMessage] = useState(""); 
     const [card, setCard] = useState(null); 
@@ -25,7 +25,6 @@ const PixDeposit = () => {
             console.error("Cartão não encontrado");
         }
 
-        // Gerar chave Pix aleatória
         const generatePixKey = () => {
             const randomKey = `chave-pix-${Math.random().toString(36).substr(2, 10)}`;
             setPixKey(randomKey);
@@ -37,7 +36,7 @@ const PixDeposit = () => {
     const handleGenerateQRCode = () => {
         if (amount && parseFloat(amount) > 0) {
             const qrData = `00020126580014BR.GOV.BCB.PIX0136${pixKey}5204000053039865802BR5925Nome do Recebedor6009Cidade00000000000000000000000${amount}`;
-            setGeneratedQR(qrData); // Gerar QR Code com a chave e o valor
+            setGeneratedQR(qrData); 
         } else {
             setToastMessage("Por favor, insira um valor válido.");
             setShowToast(true);
@@ -54,8 +53,8 @@ const PixDeposit = () => {
 
             setToastMessage(`Depósito de R$ ${amount} realizado com sucesso!`);
             setShowToast(true);
-            setAmount(""); // Limpar valor
-            setGeneratedQR(null); // Limpar QR Code
+            setAmount(""); 
+            setGeneratedQR(null);
         } else {
             setToastMessage("Erro: O valor do depósito precisa ser maior que zero.");
             setShowToast(true);
@@ -150,7 +149,6 @@ const PixDeposit = () => {
                     </IonRow>
                 </IonGrid>
 
-                {/* Toast para mensagens de erro/sucesso */}
                 <IonToast
                     isOpen={showToast}
                     onDidDismiss={() => setShowToast(false)}

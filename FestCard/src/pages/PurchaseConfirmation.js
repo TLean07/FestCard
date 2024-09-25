@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonToast } from '@ionic/react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { addUserEvent } from '../data/FirestoreService'; // Função para adicionar evento no Firestore
-import { auth } from '../data/firebase-config'; // Firebase Auth para obter o ID do usuário
+import { addUserEvent } from '../data/FirestoreService'; 
+import { auth } from '../data/firebase-config'; 
 
 const PurchaseConfirmation = () => {
   const location = useLocation();
   const history = useHistory();
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const [hasSaved, setHasSaved] = useState(false); // Estado para garantir que o evento seja salvo apenas uma vez
+  const [hasSaved, setHasSaved] = useState(false); 
 
-  // Verifique se o evento foi passado corretamente
+ 
   const { event } = location.state || {};
 
   useEffect(() => {
@@ -20,9 +20,9 @@ const PurchaseConfirmation = () => {
 
       if (event && user && !hasSaved) {
         try {
-          await addUserEvent(user.uid, event); // Salvando o evento apenas uma vez
+          await addUserEvent(user.uid, event); 
           setToastMessage('Evento salvo com sucesso!');
-          setHasSaved(true); // Marcar como salvo
+          setHasSaved(true);
         } catch (error) {
           console.error('Erro ao salvar o evento:', error);
           setToastMessage('Erro ao salvar o evento.');
@@ -33,12 +33,11 @@ const PurchaseConfirmation = () => {
     };
 
     if (event && !hasSaved) {
-      handleSaveEvent(); // Chama a função de salvar o evento uma vez
+      handleSaveEvent(); 
     }
   }, [event, hasSaved]);
 
   const handleBuyMoreTickets = () => {
-    // Navega para /ticket para continuar comprando sem recarregar a página
     history.push('/ticket');
   };
 
@@ -74,7 +73,6 @@ const PurchaseConfirmation = () => {
           Continuar Comprando
         </IonButton>
 
-        {/* Toast de notificação para erros/sucesso */}
         <IonToast
           isOpen={showToast}
           message={toastMessage}
