@@ -48,7 +48,7 @@ O **FestCard** é um aplicativo mobile desenvolvido com Ionic React que oferece 
     npx cap open android
     ```
     Para iOS:
-        ```bash
+    ```bash
     ionic build
     ```
     ```bash
