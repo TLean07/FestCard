@@ -6,6 +6,7 @@ O **FestCard** é um aplicativo mobile desenvolvido com Ionic React que oferece 
 
 ## Tecnologias Utilizadas
 
+- **JavaScript**: Linguagem de programação usada para criar e controlar o comportamento dinâmico no projeto, permitindo interatividade nas páginas, integração com APIs, manipulação do DOM e lógica de negócios do aplicativo.
 - **Ionic Framework**: Para o desenvolvimento da interface e navegação.
 - **React**: Biblioteca JavaScript para construção de interfaces de usuário.
 - **Capacitor**: Para integração com funcionalidades nativas de dispositivos móveis.
