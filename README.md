@@ -40,7 +40,6 @@ O **FestCard** é um aplicativo mobile desenvolvido com Ionic React que oferece 
 
 5. **Executar no Android/iOS**:
     Caso queira testar o aplicativo em dispositivos móveis, utilize o Capacitor para criar o build:
-    Para Android:
     ```bash
     ionic build
     ```
