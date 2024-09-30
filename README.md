@@ -21,20 +21,28 @@ O **FestCard** é um aplicativo mobile desenvolvido com Ionic React que oferece 
     git clone https://github.com/TLean07/FestCard.git
     ```
 
-2. **Instale as dependências**:
+2. **Abra a pasta**:
+    ```bash
+   cd FestCard
+    ```
+
+3. **Instale as dependências**:
     Navegue até a pasta do projeto e execute:
     ```bash
     npm install
     ```
 
-3. **Execute o projeto**:
+4. **Execute o projeto**:
     Após a instalação das dependências, inicie o servidor de desenvolvimento com:
     ```bash
     npm start
     ```
 
-4. **Executar no Android/iOS**:
+5. **Executar no Android/iOS**:
     Caso queira testar o aplicativo em dispositivos móveis, utilize o Capacitor para criar o build:
+    ```bash
+    ionic build
+    ```
     ```bash
     npx cap add android
     npx cap open android
