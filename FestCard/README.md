@@ -54,7 +54,7 @@ O **FestCard** é um aplicativo mobile desenvolvido com Ionic React que oferece 
     Função: Desenvolvedor Chefe e Desenvolvedor Full Stack (FrontEnd e BackEnd)
     GitHub: [Leandro](https://github.com/TLean07)
 
-- **Kaui Rosa de Assis Rocha**  
+- **Kauai Rosa de Assis Rocha**  
     Função: Chefe de Marketing 
     GitHub: [Kauai](https://github.com/KauaiRosa)
 
