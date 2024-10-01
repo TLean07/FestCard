@@ -18,7 +18,7 @@ import PurchaseConfirmation from './pages/PurchaseConfirmation';
 import Missions from './pages/Mission';
 import PixDeposit from './pages/PixDeposit';
 import PaymentChoice from './pages/PaymentChoice';
-import NfcTransaction from './pages/NfcTransaction'; // Nova página NFC
+import NfcTransaction from './pages/NfcTransaction'; 
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';

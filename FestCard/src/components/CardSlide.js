@@ -8,12 +8,14 @@ import TransactionItem from "./TransactionItem";
 import { addOutline, arrowRedoOutline, cashOutline, qrCodeOutline } from "ionicons/icons";
 import { formatBalance } from "../data/Utils";
 import { AccountStore } from "../data/AccountStore"; // Adicionado para FestCoins
+import { useHistory } from "react-router"; // Adicionado para redirecionamento
 
 const CardSlide = (props) => {
   const { index, card, profile } = props;
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const festCoins = AccountStore.useState(s => s.profile.festCoins); // Pegando o saldo de FestCoins
+  const festCoins = AccountStore.useState((s) => s.profile.festCoins); // Pegando o saldo de FestCoins
+  const history = useHistory(); // Usado para navegação programática
 
   const handleNfcPayment = async () => {
     try {
@@ -111,7 +113,7 @@ const CardSlide = (props) => {
               "--background-hover": card.color,
               "--background-activated": card.color,
             }}
-            routerLink={`/nfc-transaction/${card.id}`}
+            onClick={() => history.push(`/nfc-transaction/${card.id}`)} // Redireciona para a página de transação NFC
           >
             <IonIcon icon={cashOutline} />
             Pagar com Aproximação
