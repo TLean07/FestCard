@@ -10,10 +10,10 @@ import DebitCard from "../components/DebitCard";
 const NfcTransaction = () => {
   const { card_id } = useParams();
   const history = useHistory();
-  const cards = AccountStore.useState((s) => s.cards); 
-  const profile = AccountStore.useState((s) => s.profile); 
+  const cards = AccountStore.useState((s) => s.cards);
+  const profile = AccountStore.useState((s) => s.profile);
   const [card, setCard] = useState(null);
-  const [transactionAmount, setTransactionAmount] = useState(0); 
+  const [transactionAmount, setTransactionAmount] = useState(0);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
@@ -28,7 +28,7 @@ const NfcTransaction = () => {
 
   const handleNfcPayment = async () => {
     try {
-      const isBiometricAvailable = await FingerprintAIO.isAvailable();
+      const isBiometricAvailable = await FingerprintAIO.isAvailable().catch(() => null);
 
       if (isBiometricAvailable) {
         try {
@@ -44,6 +44,7 @@ const NfcTransaction = () => {
         }
       }
 
+      // Inicia a sessão NFC
       NFC.enabled().then(() => {
         NFC.beginSession().subscribe(
           (nfcData) => {
