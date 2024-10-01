@@ -12,7 +12,6 @@ const AddCard = () => {
   	const cards = AccountStore.useState(s => s.cards);
   	const cardColors = CardStore.useState(s => s.card_colors);
 	const profile = AccountStore.useState(s => s.profile);
-
     const [cardType, setCardType] = useState("Unknown");
     const [cardColor, setCardColor] = useState(cardColors[0]);
     const [cardDescription, setCardDescription] = useState("");
@@ -20,12 +19,9 @@ const AddCard = () => {
     const [cardSecret, setCardSecret] = useState("123");
     const [cardExpiry, setCardExpiry] = useState("01/22");
     const [cardBalance, setCardBalance] = useState(0);
-
     const history = useHistory();
     const [adding, setAdding] = useState(false);
     const [showToast, setShowToast] = useState({ show: false, message: '' });
-
-    // Função para validar número de cartão usando algoritmo de Luhn
     const validateCardNumber = (number) => {
         const cleanedNumber = number.replace(/\s+/g, '');
 
@@ -53,7 +49,6 @@ const AddCard = () => {
         return sum % 10 === 0;
     };
 
-    // Função para identificar a bandeira do cartão
     const identifyCardType = (number) => {
         const cleanedNumber = number.replace(/\s+/g, '');
 
@@ -71,34 +66,29 @@ const AddCard = () => {
         }
     };
 
-    // Função para validar a data de validade do cartão
     const validateExpiryDate = (expiry) => {
         const [month, year] = expiry.split('/').map(num => parseInt(num, 10));
         const now = new Date();
-        const currentMonth = now.getMonth() + 1; // Os meses no JavaScript são de 0 a 11, por isso adicionamos 1.
-        const currentYear = now.getFullYear() % 100; // Pega os últimos dois dígitos do ano.
+        const currentMonth = now.getMonth() + 1;
+        const currentYear = now.getFullYear() % 100; 
 
         if (year > currentYear || (year === currentYear && month >= currentMonth)) {
             return true;
         }
-
-        return false; // Cartão está vencido.
+        return false; 
     };
 
-    // Função para validar o número secreto (CVV)
     const validateCardSecret = (secret) => {
         const cleanedSecret = secret.trim();
         return cleanedSecret.length === 3 || cleanedSecret.length === 4;
     };
 
-    // Função para lidar com a mudança no número do cartão
     const handleCardNumberChange = (e) => {
         const newCardNumber = e.currentTarget.value;
         setCardNumber(newCardNumber);
         identifyCardType(newCardNumber);
     };
 
-    // Função principal para adicionar o cartão
     const addCard = async () => {
         if (!validateCardNumber(cardNumber)) {
             setShowToast({ show: true, message: 'Número do cartão inválido.' });
