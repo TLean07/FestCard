@@ -128,6 +128,32 @@ export const addTransactionToCard = async (newTransaction, cardID) => {
     saveUserData(); // Salva automaticamente no Firestore após a adição de uma transação
 };
 
+// Função para deduzir o saldo de um cartão específico após a compra de um ticket
+export const updateBalance = (cardId, amount) => {
+    AccountStore.update(s => {
+        const card = s.cards.find(c => c.id === cardId);
+        if (card) {
+            card.balance -= amount;
+        }
+    });
+    saveUserData(); // Salva automaticamente no Firestore após a atualização do saldo
+};
+
+export const updateFestCoins = (amount) => {
+    AccountStore.update(s => {
+        s.profile.festCoins = s.profile.festCoins - amount;
+    });
+    saveUserData(); // Salva automaticamente no Firestore após atualização do saldo de FestCoins
+};
+
+// Função para deduzir o saldo em dinheiro
+export const updateProfileBalance = (amount) => {
+    AccountStore.update(s => {
+        s.profile.balance = s.profile.balance - amount;
+    });
+    saveUserData(); // Salva automaticamente no Firestore após atualização do saldo em dinheiro
+};
+
 export const autoSaveChanges = () => {
     const unsubscribe = AccountStore.subscribe(async () => {
         try {
@@ -138,18 +164,4 @@ export const autoSaveChanges = () => {
         }
     });
     return unsubscribe; // Retorna a função para remover o listener quando necessário
-};
-
-export const updateFestCoins = (amount) => {
-    AccountStore.update(s => {
-        s.profile.festCoins = s.profile.festCoins - amount;
-    });
-    saveUserData(); // Salva automaticamente no Firestore após atualização do saldo de FestCoins
-};
-
-export const updateBalance = (amount) => {
-    AccountStore.update(s => {
-        s.profile.balance = s.profile.balance - amount;
-    });
-    saveUserData(); // Salva automaticamente no Firestore após atualização do saldo em dinheiro
 };

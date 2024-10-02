@@ -7,8 +7,8 @@ import styles from "./CardSlide.module.css";
 import TransactionItem from "./TransactionItem";
 import { addOutline, arrowRedoOutline, cashOutline, qrCodeOutline } from "ionicons/icons";
 import { formatBalance } from "../data/Utils";
-import { AccountStore } from "../data/AccountStore"; // Adicionado para FestCoins
-import { useHistory } from "react-router"; // Adicionado para redirecionamento
+import { AccountStore } from "../data/AccountStore";
+import { useHistory } from "react-router";
 
 const CardSlide = (props) => {
   const { index, card, profile } = props;
@@ -86,7 +86,6 @@ const CardSlide = (props) => {
         </IonCol>
       </IonRow>
 
-      {/* Buttons Section */}
       <IonRow className="ion-text-center">
         <IonCol size="12">
           <IonButton
@@ -136,7 +135,6 @@ const CardSlide = (props) => {
         </IonCol>
       </IonRow>
 
-      {/* Transactions Section */}
       <IonRow className={styles.heading}>
         <IonCol size="12">
           <h6>Transações</h6>
@@ -174,7 +172,6 @@ const CardSlide = (props) => {
         </IonRow>
       )}
 
-      {/* Toast for NFC */}
       <IonToast
         isOpen={showToast}
         onDidDismiss={() => setShowToast(false)}

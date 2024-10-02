@@ -14,21 +14,21 @@ const Ticket = () => {
   }, [mainColor, buttonTextColor]);
 
   const shows = [
-    { id: 1, title: 'Rock in Rio', date: '25 de Setembro, 2024' },
-    { id: 2, title: 'Lollapalooza', date: '15 de Março, 2024' },
-    { id: 3, title: 'Tomorrowland', date: '10 de Julho, 2024' }
+    { id: 1, title: 'Rock in Rio', date: '25 de Setembro, 2024', category: 'show' },
+    { id: 2, title: 'Lollapalooza', date: '15 de Março, 2024', category: 'show' },
+    { id: 3, title: 'Tomorrowland', date: '10 de Julho, 2024', category: 'show' }
   ];
 
   const sports = [
-    { id: 1, title: 'Final da Copa do Mundo', date: '18 de Dezembro, 2024' },
-    { id: 2, title: 'Super Bowl', date: '11 de Fevereiro, 2024' },
-    { id: 3, title: 'NBA Finals', date: '5 de Junho, 2024' }
+    { id: 1, title: 'Final da Copa do Mundo', date: '18 de Dezembro, 2024', category: 'esporte' },
+    { id: 2, title: 'Super Bowl', date: '11 de Fevereiro, 2024', category: 'esporte' },
+    { id: 3, title: 'NBA Finals', date: '5 de Junho, 2024', category: 'esporte' }
   ];
 
   const festivals = [
-    { id: 1, title: 'Oktoberfest', date: '1 de Outubro, 2024' },
-    { id: 2, title: 'Carnaval do Rio', date: '20 de Fevereiro, 2024' },
-    { id: 3, title: 'Festival de Cannes', date: '14 de Maio, 2024' }
+    { id: 1, title: 'Oktoberfest', date: '1 de Outubro, 2024', category: 'festival' },
+    { id: 2, title: 'Carnaval do Rio', date: '20 de Fevereiro, 2024', category: 'festival' },
+    { id: 3, title: 'Festival de Cannes', date: '14 de Maio, 2024', category: 'festival' }
   ];
 
   const cards = [
@@ -49,8 +49,8 @@ const Ticket = () => {
   };
 
   const handlePurchase = (item) => {
-    const category = item.title.includes('Rock') ? 'show' : item.title.includes('Copa') ? 'esporte' : 'festival';
-    history.push('/payment-choice', { event: { ...item, price: 100, category } });
+    // O item já contém a categoria (show, festival, esporte)
+    history.push('/payment-choice', { event: { ...item, price: 100 } });
   };
 
   return (
