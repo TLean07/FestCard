@@ -49,7 +49,6 @@ const Ticket = () => {
   };
 
   const handlePurchase = (item) => {
-    // O item já contém a categoria (show, festival, esporte)
     history.push('/payment-choice', { event: { ...item, price: 100 } });
   };
 

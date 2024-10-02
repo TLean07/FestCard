@@ -18,7 +18,6 @@ const PurchaseConfirmation = () => {
 
       if (event && user && !hasSaved) {
         try {
-          // Salvando o evento no Firestore
           await addUserEvent(user.uid, event); 
           setToastMessage('Evento salvo com sucesso!');
           setHasSaved(true);

@@ -39,7 +39,6 @@ const App = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet id="main">
-        {/* Rotas fora do IonTabs */}
         <Route path="/" exact={true}>
           <Redirect to="/splash" />
         </Route>
@@ -95,7 +94,6 @@ const App = () => (
               <PaymentChoice />
             </Route>
 
-            {/* Nova rota para NFC Transaction */}
             <Route path="/nfc-transaction/:card_id" exact={true}>
               <NfcTransaction />
             </Route>

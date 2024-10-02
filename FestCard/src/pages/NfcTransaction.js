@@ -8,17 +8,17 @@ import { addTransactionToCard, AccountStore } from "../data/AccountStore";
 import DebitCard from "../components/DebitCard";
 
 const NfcTransaction = () => {
-  const { card_id } = useParams(); // Obtém o ID do cartão selecionado
+  const { card_id } = useParams();
   const history = useHistory();
-  const cards = AccountStore.useState((s) => s.cards); 
-  const profile = AccountStore.useState((s) => s.profile); 
-  const [card, setCard] = useState(null); // Estado para armazenar o cartão selecionado
-  const [transactionAmount, setTransactionAmount] = useState(0); 
+  const cards = AccountStore.useState((s) => s.cards);
+  const profile = AccountStore.useState((s) => s.profile);
+  const [card, setCard] = useState(null);
+  const [transactionAmount, setTransactionAmount] = useState(0);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
   useEffect(() => {
-    const selectedCard = cards.find((c) => c.id === card_id); // Seleciona o cartão pelo ID
+    const selectedCard = cards.find((c) => c.id === card_id);
     if (selectedCard) {
       setCard(selectedCard);
     } else {
@@ -26,14 +26,12 @@ const NfcTransaction = () => {
     }
   }, [card_id, cards]);
 
-  // Função para lidar com pagamento NFC
   const handleNfcPayment = async () => {
     try {
       const isBiometricAvailable = await FingerprintAIO.isAvailable();
 
       if (isBiometricAvailable) {
         try {
-          // Tenta autenticar com a impressão digital
           await FingerprintAIO.show({
             title: "Autenticar Pagamento",
             subtitle: "Confirme sua identidade para prosseguir",
@@ -46,11 +44,10 @@ const NfcTransaction = () => {
         }
       }
 
-      // Inicia a sessão NFC
       NFC.enabled().then(() => {
         NFC.beginSession().subscribe(
           (nfcData) => {
-            const detectedAmount = parseFloat(nfcData.tag.ndefMessage[0].payload); // Obtém o valor da transação da máquina NFC
+            const detectedAmount = parseFloat(nfcData.tag.ndefMessage[0].payload);
             if (isNaN(detectedAmount) || detectedAmount <= 0) {
               setToastMessage("Valor inválido detectado pela maquininha.");
               setShowToast(true);
@@ -58,10 +55,9 @@ const NfcTransaction = () => {
               return;
             }
 
-            setTransactionAmount(detectedAmount); // Armazena o valor detectado
+            setTransactionAmount(detectedAmount);
 
             if (card.balance >= detectedAmount) {
-              // Processa a transação se o saldo for suficiente
               processTransaction(detectedAmount);
             } else {
               setToastMessage("Saldo insuficiente para realizar o pagamento.");
@@ -85,7 +81,6 @@ const NfcTransaction = () => {
     }
   };
 
-  // Função para processar a transação e atualizar o saldo no Firestore
   const processTransaction = async (amount) => {
     const newTransaction = {
       name: "Pagamento NFC",
@@ -94,12 +89,12 @@ const NfcTransaction = () => {
       date: new Date().toISOString(),
     };
 
-    await addTransactionToCard(newTransaction, card_id); // Adiciona a transação ao cartão
+    await addTransactionToCard(newTransaction, card_id);
 
     AccountStore.update((s) => {
       const cardToUpdate = s.cards.find((c) => c.id === card_id);
       if (cardToUpdate) {
-        cardToUpdate.balance -= amount; // Deduz o saldo
+        cardToUpdate.balance -= amount;
       }
     });
 
@@ -110,7 +105,7 @@ const NfcTransaction = () => {
       history.push("/home");
     }, 2000);
 
-    NFC.endSession(); // Encerra a sessão NFC
+    NFC.endSession();
   };
 
   if (!card) {
