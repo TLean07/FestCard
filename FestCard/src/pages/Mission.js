@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonProgressBar } from '@ionic/react';
 import { useParams } from 'react-router-dom';
-import { AccountStore } from '../data/AccountStore'; // Importando o AccountStore
+import { AccountStore } from '../data/AccountStore';
 
 const Missions = () => {
   const { eventId } = useParams();
 
-  // Progresso da missão
   const [missionProgress, setMissionProgress] = useState({
     mission1: 0.0,
     mission2: 0.0,
     mission3: 0.0,
   });
 
-  const festCoins = AccountStore.useState(s => s.festCoins); // Acessar FestCoins do estado global
+  const festCoins = AccountStore.useState(s => s.festCoins);
 
-  // Simulação de progresso e ganho de FestCoins
   useEffect(() => {
     const interval = setInterval(() => {
       setMissionProgress(prevProgress => {
@@ -23,7 +21,6 @@ const Missions = () => {
         const updatedMission2 = Math.min(prevProgress.mission2 + 0.01, 1);
         const updatedMission3 = Math.min(prevProgress.mission3 + 0.01, 1);
 
-        // Atualizar FestCoins globalmente ao completar missões
         if (updatedMission1 === 1 && prevProgress.mission1 < 1) {
           AccountStore.update(s => { s.festCoins += 5; });
         }
@@ -54,7 +51,6 @@ const Missions = () => {
       </IonHeader>
       <IonContent>
         <IonList>
-          {/* Missão 1 */}
           <IonItem lines="none">
             <IonLabel><strong>Missão 1: Comprar 5 garrafas de água</strong></IonLabel>
           </IonItem>
@@ -63,7 +59,6 @@ const Missions = () => {
             <IonProgressBar value={missionProgress.mission1} color={missionProgress.mission1 === 1 ? 'success' : 'primary'}></IonProgressBar>
           </IonItem>
 
-          {/* Missão 2 */}
           <IonItem lines="none">
             <IonLabel><strong>Missão 2: Comprar 5 doces</strong></IonLabel>
           </IonItem>
@@ -72,7 +67,6 @@ const Missions = () => {
             <IonProgressBar value={missionProgress.mission2} color={missionProgress.mission2 === 1 ? 'success' : 'primary'}></IonProgressBar>
           </IonItem>
 
-          {/* Missão 3 */}
           <IonItem lines="none">
             <IonLabel><strong>Missão 3: Comprar 5 lanches naturais</strong></IonLabel>
           </IonItem>

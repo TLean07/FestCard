@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { getUserEvents } from '../data/FirestoreService'; // Função para buscar eventos do Firestore
+import { getUserEvents } from '../data/FirestoreService';
 import { auth } from '../data/firebase-config';
 
 const Event = () => {
@@ -10,7 +10,7 @@ const Event = () => {
   const history = useHistory();
 
   useEffect(() => {
-    let isMounted = true; // Flag para verificar se o componente ainda está montado
+    let isMounted = true;
 
     const fetchEvents = async () => {
       setLoading(true);

@@ -14,8 +14,8 @@ const CardSlide = (props) => {
   const { index, card, profile } = props;
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const festCoins = AccountStore.useState((s) => s.profile.festCoins); // Pegando o saldo de FestCoins
-  const history = useHistory(); // Usado para navegação programática
+  const festCoins = AccountStore.useState((s) => s.profile.festCoins);
+  const history = useHistory();
 
   const handleNfcPayment = async () => {
     try {
@@ -112,7 +112,7 @@ const CardSlide = (props) => {
               "--background-hover": card.color,
               "--background-activated": card.color,
             }}
-            onClick={() => history.push(`/nfc-transaction/${card.id}`)} // Redireciona para a página de transação NFC
+            onClick={() => history.push(`/nfc-transaction/${card.id}`)}
           >
             <IonIcon icon={cashOutline} />
             Pagar com Aproximação

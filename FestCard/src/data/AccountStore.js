@@ -8,8 +8,8 @@ export const AccountStore = new Store({
         surname: "",
         avatar: "/User.png",
         isUsernameSet: false,
-        festCoins: 0, // Adicionando o campo de FestCoins
-        balance: 0,  // Saldo em dinheiro
+        festCoins: 0,
+        balance: 0,
     },
     cards: [],
 });
@@ -29,8 +29,8 @@ export const loadUserData = async (updateLocalState = true) => {
         surname: "",
         avatar: "/User.png",
         isUsernameSet: false,
-        festCoins: 0,  // FestCoins inicializado
-        balance: 0,  // Saldo em dinheiro inicializado
+        festCoins: 0,
+        balance: 0,
     };
 
     if (profileDoc.exists()) {
@@ -70,9 +70,9 @@ export const saveUserData = async () => {
     try {
         const userProfileRef = doc(db, "users", userId);
         await setDoc(userProfileRef, {
-            ...profile, // Mantém o perfil
-            festCoins: profile.festCoins, // Atualiza o saldo de FestCoins
-            balance: profile.balance, // Atualiza o saldo em dinheiro
+            ...profile,
+            festCoins: profile.festCoins,
+            balance: profile.balance,
         }, { merge: true });
 
         for (const card of cards) {
@@ -99,17 +99,17 @@ export const updateProfileName = (firstname, surname) => {
         s.profile.surname = surname;
         s.profile.isUsernameSet = true;
     });
-    saveUserData(); // Salva automaticamente no Firestore após a atualização do perfil
+    saveUserData();
 };
 
 export const addCardToAccount = (newCard) => {
     AccountStore.update(s => {
         s.cards = [
             ...s.cards,
-            { ...newCard, id: Math.random().toString(36).substr(2, 9) } // ID temporário
+            { ...newCard, id: Math.random().toString(36).substr(2, 9) }
         ];
     });
-    saveUserData(); // Salva automaticamente no Firestore após a adição do cartão
+    saveUserData();
 };
 
 export const addTransactionToCard = async (newTransaction, cardID) => {
@@ -125,10 +125,9 @@ export const addTransactionToCard = async (newTransaction, cardID) => {
             }
         }
     });
-    saveUserData(); // Salva automaticamente no Firestore após a adição de uma transação
+    saveUserData();
 };
 
-// Função para deduzir o saldo de um cartão específico após a compra de um ticket
 export const updateBalance = (cardId, amount) => {
     AccountStore.update(s => {
         const card = s.cards.find(c => c.id === cardId);
@@ -136,22 +135,44 @@ export const updateBalance = (cardId, amount) => {
             card.balance -= amount;
         }
     });
-    saveUserData(); // Salva automaticamente no Firestore após a atualização do saldo
+    saveUserData();
 };
 
-export const updateFestCoins = (amount) => {
-    AccountStore.update(s => {
-        s.profile.festCoins = s.profile.festCoins - amount;
-    });
-    saveUserData(); // Salva automaticamente no Firestore após atualização do saldo de FestCoins
+export const updateFestCoins = async (festCoinsToAdd) => {
+  const userId = auth.currentUser?.uid;
+  if (!userId) {
+    console.error("User is not authenticated.");
+    return;
+  }
+
+  const userProfileRef = doc(db, "users", userId);
+  
+  try {
+    const userProfileDoc = await getDoc(userProfileRef);
+    if (userProfileDoc.exists()) {
+      const userProfileData = userProfileDoc.data();
+      const updatedFestCoins = (userProfileData.festCoins || 0) + festCoinsToAdd;
+
+      await setDoc(userProfileRef, {
+        festCoins: updatedFestCoins
+      }, { merge: true });
+
+      AccountStore.update(s => {
+        s.profile.festCoins = updatedFestCoins;
+      });
+    } else {
+      console.error("User profile not found.");
+    }
+  } catch (error) {
+    console.error("Erro ao atualizar FestCoins:", error);
+  }
 };
 
-// Função para deduzir o saldo em dinheiro
 export const updateProfileBalance = (amount) => {
     AccountStore.update(s => {
         s.profile.balance = s.profile.balance - amount;
     });
-    saveUserData(); // Salva automaticamente no Firestore após atualização do saldo em dinheiro
+    saveUserData();
 };
 
 export const autoSaveChanges = () => {
@@ -163,5 +184,5 @@ export const autoSaveChanges = () => {
             console.error('Erro ao salvar alterações automaticamente no Firestore:', error);
         }
     });
-    return unsubscribe; // Retorna a função para remover o listener quando necessário
+    return unsubscribe;
 };

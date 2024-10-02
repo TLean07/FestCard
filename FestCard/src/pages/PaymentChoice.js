@@ -6,12 +6,14 @@ import { AccountStore, updateFestCoins, updateBalance, addTransactionToCard } fr
 const PaymentChoice = () => {
   const history = useHistory();
   const location = useLocation();
-  const { event } = location.state || {}; // Verifica se o event existe, caso contrário, usa um objeto vazio.
+  const { event } = location.state || {}; // Verifica se o evento existe, caso contrário, usa um objeto vazio.
   const festCoins = AccountStore.useState(s => s.profile.festCoins);
   const cards = AccountStore.useState(s => s.cards); // Carrega os cartões do estado
   const [selectedCardId, setSelectedCardId] = useState(null); // Armazena o ID do cartão selecionado
   const [filteredCards, setFilteredCards] = useState([]); // Armazena os cartões filtrados
   const [error, setError] = useState(null);
+  const [showToast, setShowToast] = useState(false); // Controle para o Toast de cashback
+  const [cashbackMessage, setCashbackMessage] = useState(''); // Mensagem do cashback
 
   // Adicionando log para verificar os cartões
   useEffect(() => {
@@ -53,9 +55,25 @@ const PaymentChoice = () => {
     }
   }, [event, history]);
 
-  const handleFestCoinPurchase = () => {
-    if (festCoins >= event.price) {
-      updateFestCoins(event.price); // Deduz o valor de FestCoins
+  const handleFestCoinPurchase = async () => {
+    const festCoinValue = 0.35; // Valor de cada FestCoin em reais
+    const festCoinsNeeded = Math.ceil(event.price / festCoinValue); // Número de FestCoins necessários para a compra
+
+    if (festCoins >= festCoinsNeeded) {
+      // Deduz o número necessário de FestCoins do saldo do usuário
+      await updateFestCoins(-festCoinsNeeded); // Agora estamos **deduzindo** a quantidade correta de FestCoins
+
+      // Adiciona a compra como uma transação de FestCoins
+      const transaction = {
+        name: `Compra de ingresso: ${event.title}`,
+        amount: event.price,
+        deposit: false,
+        date: new Date().toISOString(),
+        isFestCoin: true, // Marca como transação de FestCoins
+      };
+
+      await addTransactionToCard(transaction, selectedCardId); // Função para adicionar a transação
+
       history.push('/purchase-confirmation', { event });
     } else {
       setError('Saldo insuficiente de FestCoins');
@@ -72,17 +90,39 @@ const PaymentChoice = () => {
     if (selectedCard.balance >= event.price) {
       try {
         // Atualiza o saldo do cartão
-        await updateBalance(selectedCard.id, event.price);
+        const roundedPrice = parseFloat(event.price.toFixed(2)); // Arredonda o valor para 2 casas decimais
+        await updateBalance(selectedCard.id, roundedPrice);
 
         // Adiciona a compra como uma transação no cartão
         const transaction = {
           name: `Compra de ingresso: ${event.title}`, // Descrição da transação
-          amount: event.price,
+          amount: roundedPrice,
           deposit: false, // É uma compra, portanto não é depósito
-          date: new Date().toISOString(), // Data da transação
+          date: new Date().toISOString(),
         };
 
         await addTransactionToCard(transaction, selectedCard.id); // Função para adicionar a transação
+
+        // **Somente aplica cashback para compras feitas com dinheiro**
+        const festCoinsEarned = Math.floor(event.price / 3); // FestCoins ganhos
+        if (festCoinsEarned > 0) {
+          await updateFestCoins(festCoinsEarned); // Adiciona as FestCoins ganhas ao saldo
+
+          // Registra a transação de ganho de FestCoins como cashback
+          const festCoinTransaction = {
+            name: `Cashback por compra de ingresso: ${event.title}`,
+            amount: festCoinsEarned,
+            deposit: true, // É um depósito de FestCoins
+            date: new Date().toISOString(),
+            isFestCoin: true, // Marca como transação de FestCoins
+          };
+
+          await addTransactionToCard(festCoinTransaction, selectedCard.id); // Adiciona transação de FestCoins ganhas
+
+          // Define a mensagem de cashback e mostra o Toast
+          setCashbackMessage(`Você ganhou ${festCoinsEarned} FestCoin(s) como cashback!`);
+          setShowToast(true);
+        }
 
         // Redireciona para a confirmação da compra
         history.push('/purchase-confirmation', { event });
@@ -103,6 +143,7 @@ const PaymentChoice = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         {error && <IonToast isOpen={true} message={error} duration={3000} onDidDismiss={() => setError(null)} />}
+        {showToast && <IonToast isOpen={true} message={cashbackMessage} duration={5000} onDidDismiss={() => setShowToast(false)} />}
         
         <IonList>
           {filteredCards.length > 0 ? (
@@ -115,7 +156,7 @@ const PaymentChoice = () => {
               >
                 <IonLabel>
                   <h2>{card.description}</h2>
-                  <p>FestCoins: {card.festCoins} - R$ {card.balance}</p>
+                  <p>FestCoins: {card.festCoins} - R$ {card.balance.toFixed(2)}</p>
                 </IonLabel>
               </IonItem>
             ))
@@ -135,7 +176,7 @@ const PaymentChoice = () => {
           style={{ marginTop: '20px' }} 
           disabled={!selectedCardId || !event}
         >
-          Pagar com Saldo do Cartão (Saldo: R$ {filteredCards.find(card => card.id === selectedCardId)?.balance || 0})
+          Pagar com Saldo do Cartão (Saldo: R$ {filteredCards.find(card => card.id === selectedCardId)?.balance.toFixed(2) || 0})
         </IonButton>
       </IonContent>
     </IonPage>
