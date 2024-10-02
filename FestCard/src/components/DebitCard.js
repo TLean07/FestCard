@@ -18,7 +18,7 @@ const DebitCard = (props) => {
     <div className={styles.card}>
       <div className={`${styles.card__front} ${styles.card__part} ${styles[cardClass]}`}>
         <img className={`${styles.card__front_chip} ${styles.card__square}`} src="/chip.png" alt="Chip" />
-        <img className={`${styles.card__front_square} ${styles.card__square}`} src="/transparent.png" alt="Logo" />
+        <img className={`${styles.card__front_square} ${styles.card__square}`} src="/transparent2.png" alt="Logo" />
         <img className={`${styles.card__front_logo} ${styles.card__logo}`} src={cardTypeLogo} alt="Card Type Logo" />
         <p className={styles.card_number}>**** **** **** {lastFourCardNumbers}</p>
 
