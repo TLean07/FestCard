@@ -66,7 +66,7 @@ const PaymentChoice = () => {
         isFestCoin: true,
       };
 
-      await addTransactionToCard(transaction, selectedCardId);
+      await addTransactionToCard(transaction, null); // Transação usando FestCoins, não associada a um cartão
 
       history.push('/purchase-confirmation', { event });
     } else {
@@ -84,7 +84,9 @@ const PaymentChoice = () => {
     if (selectedCard.balance >= event.price) {
       try {
         const roundedPrice = parseFloat(event.price.toFixed(2));
-        await updateBalance(selectedCard.id, roundedPrice);
+
+        // Subtrai o valor do saldo do cartão corretamente
+        await updateBalance(selectedCard.id, roundedPrice); // Sem passar valor negativo
 
         const transaction = {
           name: `Compra de ingresso: ${event.title}`,
@@ -93,21 +95,23 @@ const PaymentChoice = () => {
           date: new Date().toISOString(),
         };
 
-        await addTransactionToCard(transaction, selectedCard.id);
+        await addTransactionToCard(transaction, selectedCard.id); // Transação associada ao cartão
 
-        const festCoinsEarned = Math.floor(event.price / 3);
+        // Calcular o cashback e adicionar APENAS às FestCoins
+        const festCoinsEarned = Math.floor(event.price / 3); // Cashback em FestCoins
         if (festCoinsEarned > 0) {
-          await updateFestCoins(festCoinsEarned);
+          await updateFestCoins(festCoinsEarned); // Adiciona o cashback às FestCoins
 
           const festCoinTransaction = {
             name: `Cashback por compra de ingresso: ${event.title}`,
             amount: festCoinsEarned,
             deposit: true,
             date: new Date().toISOString(),
-            isFestCoin: true,
+            isFestCoin: true, // Marca a transação como FestCoin
           };
 
-          await addTransactionToCard(festCoinTransaction, selectedCard.id);
+          // Adiciona a transação de FestCoins ao histórico de transações, não associada a um cartão
+          await addTransactionToCard(festCoinTransaction, null);
 
           setCashbackMessage(`Você ganhou ${festCoinsEarned} FestCoin(s) como cashback!`);
           setShowToast(true);

@@ -4,7 +4,7 @@ import styles from "./TransactionItem.module.css";
 
 const TransactionItem = props => {
 
-    const { name, amount, deposit, color } = props;
+    const { name, amount, deposit, color, isFestCoin } = props; // Adicionado isFestCoin
 
     const getContactNameInitials = contactName => {
 
@@ -52,7 +52,7 @@ const TransactionItem = props => {
                 <IonLabel className={ `ion-text-wrap ${ styles.transactionContent }` }>
                     <h4 className={ deposit ? styles.green : styles.red }>
                         { deposit ? "+" : "-"}
-                        { formatBalance(amount) }
+                        { formatBalance(amount, isFestCoin) } {/* Exibe o "F$" se for FestCoin */}
                     </h4>
                 </IonLabel>
             </div>
