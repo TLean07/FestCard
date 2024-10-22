@@ -83,14 +83,14 @@ const PaymentChoice = () => {
 
     if (selectedCard.balance >= event.price) {
       try {
-        const roundedPrice = parseFloat(event.price.toFixed(2));
+        const exactPrice = event.price; // Garantir que o preço seja o correto
 
-        // Subtrai o valor do saldo do cartão corretamente
-        await updateBalance(selectedCard.id, roundedPrice); // Sem passar valor negativo
+        // Subtrai o valor correto do saldo do cartão
+        await updateBalance(selectedCard.id, exactPrice); 
 
         const transaction = {
           name: `Compra de ingresso: ${event.title}`,
-          amount: roundedPrice,
+          amount: exactPrice,
           deposit: false,
           date: new Date().toISOString(),
         };

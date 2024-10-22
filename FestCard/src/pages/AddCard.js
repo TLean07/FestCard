@@ -22,6 +22,7 @@ const AddCard = () => {
     const history = useHistory();
     const [adding, setAdding] = useState(false);
     const [showToast, setShowToast] = useState({ show: false, message: '' });
+
     const validateCardNumber = (number) => {
         const cleanedNumber = number.replace(/\s+/g, '');
 
@@ -155,18 +156,18 @@ const AddCard = () => {
                     <IonRow className="ion-padding-top">
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Tipo de Cartão (Detectado)</IonLabel>
+                                <IonLabel position="floating">Bandeira do cartão</IonLabel>
                                 <IonInput type="text" inputmode="text" value={ cardType } readonly />
                             </IonItem>
                         </IonCol>
 
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Cor do Cartão</IonLabel>
+                                <IonLabel position="floating">Tipo de Cartão</IonLabel>
                                 <IonSelect placeholder="Select color" value={ cardColor } onIonChange={ e => setCardColor(e.currentTarget.value) }>
                                     { cardColors.map((option, index) => (
                                         <IonSelectOption key={ index } value={ option }>
-                                            { option.toUpperCase() }
+                                            { option === 'blue' ? 'ESPORTES' : option === 'black' ? 'SHOWS' : option === 'purple' ? 'FESTIVAIS' : option.toUpperCase() }
                                         </IonSelectOption>
                                     ))}
                                 </IonSelect> 
