@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap');
+
+/* Estilo geral da página de transação NFC */
+.nfc-transaction-page {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Animação de fade-in ao carregar */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Header estilizado */
+.nfc-header {
+  font-family: 'Just Another Hand', cursive;
+  font-size: 48px;
+  color: #EE1F79;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Cartão de Débito com animação */
+.debit-card {
+  background-color: #f0f0f5;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin-bottom: 1.5rem;
+}
+
+/* Efeito hover no cartão */
+.debit-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Botão estilizado para pagamento NFC */
+.nfc-button {
+  background-color: #EE1F79;
+  color: #ffffff;
+  padding: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 1.5rem;
+}
+
+.nfc-button:hover {
+  background-color: #d81a68;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.nfc-button:active {
+  background-color: #b71657;
+}
+
+/* Valor da transação */
+.transaction-amount {
+  font-size: 24px;
+  color: #333333;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+/* Mensagem de erro ou sucesso */
+.toast-message {
+  font-size: 18px;
+  color: #EE1F79;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .nfc-transaction-page {
+    padding: 1rem;
+  }
+
+  .debit-card {
+    margin-bottom: 1rem;
+  }
+}

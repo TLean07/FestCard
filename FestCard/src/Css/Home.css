@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap');
+
+/* Estilo geral da página Home */
+.home-page {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  max-width: 100%;
+  margin: auto;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Animação suave ao carregar */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Header personalizado */
+.home-header {
+  font-family: 'Just Another Hand', cursive;
+  font-size: 48px;
+  color: #EE1F79;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Slides com espaçamento elegante e suave */
+.cards-container {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding: 1rem;
+  gap: 20px;
+  background: linear-gradient(135deg, #f0f0f5, #ffffff);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-slide {
+  flex: 1;
+  padding: 1rem;
+  margin: 1rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Efeito de hover nos slides */
+.custom-slide:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilização do título dentro dos slides */
+.custom-slide h4 {
+  font-size: 24px;
+  font-family: 'Just Another Hand', cursive;
+  color: #333333;
+  margin-bottom: 0.5rem;
+}
+
+.custom-slide p {
+  font-size: 16px;
+  color: #8a8a8a;
+  margin-bottom: 1rem;
+}
+
+/* Botão no slide com design moderno */
+.custom-slide button {
+  background-color: #EE1F79;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-slide button:hover {
+  background-color: #d81a68;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.custom-slide button:active {
+  background-color: #b71657;
+}
+
+/* Barra de navegação estilizada */
+.home-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.home-navbar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #EE1F79;
+}
+
+.home-navbar h1 {
+  font-size: 24px;
+  font-family: 'Just Another Hand', cursive;
+  color: #EE1F79;
+  margin: 0;
+}
+
+/* Efeito de transição suave nos botões */
+button {
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .home-page {
+    padding: 1rem;
+  }
+
+  .cards-container {
+    flex-direction: column;
+  }
+
+  .custom-slide {
+    margin: 1rem 0;
+  }
+}

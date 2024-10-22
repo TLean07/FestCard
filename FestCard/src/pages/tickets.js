@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonSlides, IonSlide } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
+import '../Css/Ticket.css';
 
 const Ticket = () => {
   const [pageTitle, setPageTitle] = useState('Shows');

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonItem, IonLabel, IonToast, IonList } from '@ionic/react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { AccountStore, updateFestCoins, updateBalance, addTransactionToCard } from '../data/AccountStore';
+import '../Css/PaymentChoice.css';
 
 const PaymentChoice = () => {
   const history = useHistory();

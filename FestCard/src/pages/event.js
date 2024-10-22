@@ -3,6 +3,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem,
 import { useHistory } from 'react-router-dom';
 import { getUserEvents } from '../data/FirestoreService';
 import { auth } from '../data/firebase-config';
+import '../Css/Event.css';
 
 const Event = () => {
   const [events, setEvents] = useState([]);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonProgressBar } from '@ionic/react';
 import { useParams } from 'react-router-dom';
 import { AccountStore } from '../data/AccountStore';
+import '../Css/Mission.css';
 
 const Missions = () => {
   const { eventId } = useParams();

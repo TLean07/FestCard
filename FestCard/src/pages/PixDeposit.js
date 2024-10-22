@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { addTransactionToCard, AccountStore } from "../data/AccountStore"; 
 import DebitCard from "../components/DebitCard";
 import styles from "./Account.module.css"; 
+import '../Css/PixDeposit.css';
 
 const PixDeposit = () => {
     const { cardId } = useParams(); 

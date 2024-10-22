@@ -6,6 +6,7 @@ import { AccountStore, addCardToAccount } from '../data/AccountStore';
 import { CardStore } from '../data/CardStore';
 import { addOutline, timerOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
+import '../Css/AddCard.css';
 
 const AddCard = () => {
 

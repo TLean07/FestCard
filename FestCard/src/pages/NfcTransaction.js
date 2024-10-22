@@ -6,6 +6,7 @@ import { cashOutline } from "ionicons/icons";
 import { useParams, useHistory } from "react-router";
 import { addTransactionToCard, AccountStore } from "../data/AccountStore";
 import DebitCard from "../components/DebitCard";
+import '../Css/NfcTransaction.css';
 
 const NfcTransaction = () => {
   const { card_id } = useParams();

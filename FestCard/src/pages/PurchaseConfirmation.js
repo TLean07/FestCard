@@ -3,6 +3,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonToa
 import { useLocation, useHistory } from 'react-router-dom';
 import { addUserEvent } from '../data/FirestoreService';
 import { auth } from '../data/firebase-config';
+import '../Css/PurchaseConfirmation.css';
 
 const PurchaseConfirmation = () => {
   const location = useLocation();

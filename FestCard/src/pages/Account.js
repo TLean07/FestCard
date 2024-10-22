@@ -6,6 +6,7 @@ import { addOutline, logOutOutline } from 'ionicons/icons';
 import { formatBalance } from '../data/Utils';
 import { useHistory } from 'react-router-dom';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
+import '../Css/Account.css';
 
 const Account = () => {
   const fileInputRef = useRef(null);

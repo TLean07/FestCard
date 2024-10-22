@@ -4,7 +4,7 @@ import { personOutline, lockClosedOutline, logoGoogle } from 'ionicons/icons';
 import { getAuth, signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
 import { useHistory } from 'react-router-dom';
 import { loadUserData } from '../data/AccountStore';
-import '../Css/Login.css'
+import '../Css/Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
