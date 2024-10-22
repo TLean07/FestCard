@@ -85,8 +85,17 @@ const PaymentChoice = () => {
       try {
         const exactPrice = event.price; // Garantir que o preço seja o correto
 
+        // Log para verificar o preço correto
+        console.log('Preço exato descontado:', exactPrice);
+      
+        // Adicionando log para verificar o saldo atual antes da atualização
+        console.log('Saldo atual do cartão antes do débito:', selectedCard.balance);
+
         // Subtrai o valor correto do saldo do cartão
         await updateBalance(selectedCard.id, exactPrice); 
+
+        // Adicionando log para verificar após a atualização
+        console.log('Saldo atualizado após o débito:', selectedCard.balance - exactPrice);
 
         const transaction = {
           name: `Compra de ingresso: ${event.title}`,

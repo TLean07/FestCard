@@ -132,9 +132,19 @@ export const updateBalance = (cardId, amount) => {
     AccountStore.update(s => {
         const card = s.cards.find(c => c.id === cardId);
         if (card) {
-            card.balance -= amount;
+            // Log para verificar o saldo antes da atualização
+            console.log(`Saldo atual do cartão ${cardId}:`, card.balance);
+            console.log(`Valor a ser descontado:`, amount);
+
+            // Subtrai o valor correto do saldo
+            card.balance = (parseFloat(card.balance) || 0) - parseFloat(amount);
+
+            // Log para verificar o saldo após a atualização
+            console.log(`Novo saldo do cartão ${cardId}:`, card.balance);
         }
     });
+
+    // Salvar as alterações no Firestore após atualizar o saldo
     saveUserData();
 };
 
