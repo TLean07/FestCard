@@ -86,16 +86,11 @@ const PaymentChoice = () => {
       try {
         const exactPrice = event.price; // Garantir que o preço seja o correto
 
-        // Log para verificar o preço correto
         console.log('Preço exato descontado:', exactPrice);
-      
-        // Adicionando log para verificar o saldo atual antes da atualização
         console.log('Saldo atual do cartão antes do débito:', selectedCard.balance);
 
-        // Subtrai o valor correto do saldo do cartão
         await updateBalance(selectedCard.id, exactPrice); 
 
-        // Adicionando log para verificar após a atualização
         console.log('Saldo atualizado após o débito:', selectedCard.balance - exactPrice);
 
         const transaction = {
@@ -107,7 +102,6 @@ const PaymentChoice = () => {
 
         await addTransactionToCard(transaction, selectedCard.id); // Transação associada ao cartão
 
-        // Calcular o cashback e adicionar APENAS às FestCoins
         const festCoinsEarned = Math.floor(event.price / 3); // Cashback em FestCoins
         if (festCoinsEarned > 0) {
           await updateFestCoins(festCoinsEarned); // Adiciona o cashback às FestCoins
@@ -117,10 +111,9 @@ const PaymentChoice = () => {
             amount: festCoinsEarned,
             deposit: true,
             date: new Date().toISOString(),
-            isFestCoin: true, // Marca a transação como FestCoin
+            isFestCoin: true,
           };
 
-          // Adiciona a transação de FestCoins ao histórico de transações, não associada a um cartão
           await addTransactionToCard(festCoinTransaction, null);
 
           setCashbackMessage(`Você ganhou ${festCoinsEarned} FestCoin(s) como cashback!`);
@@ -158,7 +151,7 @@ const PaymentChoice = () => {
               >
                 <IonLabel>
                   <h2>{card.description}</h2>
-                  <p>FestCoins: {card.festCoins} - R$ {card.balance.toFixed(2)}</p>
+                  <p>FestCoins: {card.festCoins} - R$ {Number(card.balance).toFixed(2)}</p>
                 </IonLabel>
               </IonItem>
             ))
@@ -178,7 +171,7 @@ const PaymentChoice = () => {
           style={{ marginTop: '20px' }} 
           disabled={!selectedCardId || !event}
         >
-          Pagar com Saldo do Cartão (Saldo: R$ {filteredCards.find(card => card.id === selectedCardId)?.balance.toFixed(2) || 0})
+          Pagar com Saldo do Cartão (Saldo: R$ {filteredCards.find(card => card.id === selectedCardId)?.balance ? Number(filteredCards.find(card => card.id === selectedCardId).balance).toFixed(2) : '0.00'})
         </IonButton>
       </IonContent>
     </IonPage>
