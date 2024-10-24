@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap');
 
 .event-page {
-  padding: 2rem;
-  border-radius: 20px;
   max-width: 100%;
   margin: auto;
   text-align: center;
@@ -59,7 +57,6 @@
   font-size: 1.0rem;
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: none;
   display: inline-block;
   min-width: 120px;
@@ -79,15 +76,7 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 768px) {
-  .event-page {
-    padding: 1rem;
-  }
 
-  .event-item {
-    margin: 1rem 0;
-  }
-}
 
 .total-fest {
   color: #EE1F79;

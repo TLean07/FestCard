@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap');
 
 .ticket-page {
-  padding: 2rem;
-  border-radius: 20px;
   max-width: 500px;
   margin: auto;
 }

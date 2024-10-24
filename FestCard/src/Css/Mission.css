@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap');
 
 .mission-page {
-  padding: 2rem;
-  border-radius: 20px;
   max-width: 100%;
   margin: auto;
   text-align: center;
@@ -44,7 +42,6 @@
   margin-bottom: 1rem;
   font-size: 18px;
   color: #333333;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   color: #EE1F79;
 }
@@ -55,10 +52,6 @@
 }
 
 @media (max-width: 768px) {
-  .mission-page {
-    padding: 1rem;
-  }
-
   .mission-item {
     margin: 1rem 0;
   }
