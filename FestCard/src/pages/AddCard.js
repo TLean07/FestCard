@@ -6,35 +6,31 @@ import { AccountStore, addCardToAccount } from '../data/AccountStore';
 import { CardStore } from '../data/CardStore';
 import { addOutline, timerOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
+import '../Css/AddCard.css';
 
 const AddCard = () => {
 
   	const cards = AccountStore.useState(s => s.cards);
   	const cardColors = CardStore.useState(s => s.card_colors);
 	const profile = AccountStore.useState(s => s.profile);
-
-    const [ cardType, setCardType ] = useState("Unknown");
-    const [ cardColor, setCardColor ] = useState(cardColors[0]);
-    const [ cardDescription, setCardDescription ] = useState("");
-    const [ cardNumber, setCardNumber ] = useState("1234 1234 1234 1234");
-    const [ cardSecret, setCardSecret ] = useState("123");
-    const [ cardExpiry, setCardExpiry ] = useState("01/22");
-    const [ cardBalance, setCardBalance ] = useState(0);
-
+    const [cardType, setCardType] = useState("Unknown");
+    const [cardColor, setCardColor] = useState(cardColors[0]);
+    const [cardDescription, setCardDescription] = useState("");
+    const [cardNumber, setCardNumber] = useState("1234 1234 1234 1234");
+    const [cardSecret, setCardSecret] = useState("123");
+    const [cardExpiry, setCardExpiry] = useState("01/22");
+    const [cardBalance, setCardBalance] = useState(0);
     const history = useHistory();
-    const [ adding, setAdding ] = useState(false);
-    const [ showToast, setShowToast ] = useState({ show: false, message: '' });
+    const [adding, setAdding] = useState(false);
+    const [showToast, setShowToast] = useState({ show: false, message: '' });
 
     const validateCardNumber = (number) => {
-        // Remove espaços em branco
         const cleanedNumber = number.replace(/\s+/g, '');
 
-        // Verifica se o número tem 16 dígitos
         if (cleanedNumber.length !== 16 || isNaN(cleanedNumber)) {
             return false;
         }
 
-        // Implementação do Algoritmo de Luhn
         let sum = 0;
         let shouldDouble = false;
 
@@ -58,7 +54,6 @@ const AddCard = () => {
     const identifyCardType = (number) => {
         const cleanedNumber = number.replace(/\s+/g, '');
 
-        // Identifica se é Visa ou Mastercard
         if (cleanedNumber.startsWith('4')) {
             setCardType("Visa");
         } else if (
@@ -73,6 +68,23 @@ const AddCard = () => {
         }
     };
 
+    const validateExpiryDate = (expiry) => {
+        const [month, year] = expiry.split('/').map(num => parseInt(num, 10));
+        const now = new Date();
+        const currentMonth = now.getMonth() + 1;
+        const currentYear = now.getFullYear() % 100; 
+
+        if (year > currentYear || (year === currentYear && month >= currentMonth)) {
+            return true;
+        }
+        return false; 
+    };
+
+    const validateCardSecret = (secret) => {
+        const cleanedSecret = secret.trim();
+        return cleanedSecret.length === 3 || cleanedSecret.length === 4;
+    };
+
     const handleCardNumberChange = (e) => {
         const newCardNumber = e.currentTarget.value;
         setCardNumber(newCardNumber);
@@ -82,6 +94,16 @@ const AddCard = () => {
     const addCard = async () => {
         if (!validateCardNumber(cardNumber)) {
             setShowToast({ show: true, message: 'Número do cartão inválido.' });
+            return;
+        }
+
+        if (!validateExpiryDate(cardExpiry)) {
+            setShowToast({ show: true, message: 'Cartão vencido.' });
+            return;
+        }
+
+        if (!validateCardSecret(cardSecret)) {
+            setShowToast({ show: true, message: 'Número secreto inválido.' });
             return;
         }
 
@@ -113,19 +135,19 @@ const AddCard = () => {
         }, 500);
     };
 
-	return (
-		<IonPage className={ styles.accountPage }>
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
+    return (
+        <IonPage className={ styles.accountPage }>
+            <IonHeader>
+                <IonToolbar>
+                    <IonButtons slot="start">
                         <IonBackButton color="dark" />
-					</IonButtons>
-					<IonTitle>Adicionar Cartão</IonTitle>
-				</IonToolbar>
-			</IonHeader>
-			
-			<IonContent fullscreen>
-				<IonGrid>
+                    </IonButtons>
+                    <IonTitle>Adicionar Cartão</IonTitle>
+                </IonToolbar>
+            </IonHeader>
+
+            <IonContent fullscreen>
+                <IonGrid>
                     <IonRow className="animate__animated animate__fadeInTopLeft animate__faster ion-justify-content-center ion-text-center">
                         <IonCol size="12" className="ion-justify-content-center ion-text-center">
                             <DebitCard color={ cardColor } type={ cardType } expiry={ cardExpiry } number={ cardNumber } secret={ cardSecret } profile={ profile } />
@@ -135,18 +157,18 @@ const AddCard = () => {
                     <IonRow className="ion-padding-top">
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Tipo de Cartão (Detectado)</IonLabel>
+                                <IonLabel position="floating">Bandeira do cartão</IonLabel>
                                 <IonInput type="text" inputmode="text" value={ cardType } readonly />
                             </IonItem>
                         </IonCol>
 
                         <IonCol size="6">
                             <IonItem lines="full">
-                                <IonLabel position="floating">Cor do Cartão</IonLabel>
+                                <IonLabel position="floating">Tipo de Cartão</IonLabel>
                                 <IonSelect placeholder="Select color" value={ cardColor } onIonChange={ e => setCardColor(e.currentTarget.value) }>
                                     { cardColors.map((option, index) => (
                                         <IonSelectOption key={ index } value={ option }>
-                                            { option.toUpperCase() }
+                                            { option === 'blue' ? 'ESPORTES' : option === 'black' ? 'SHOWS' : option === 'purple' ? 'FESTIVAIS' : option.toUpperCase() }
                                         </IonSelectOption>
                                     ))}
                                 </IonSelect> 
@@ -214,7 +236,7 @@ const AddCard = () => {
                             </IonButton>
                         </IonCol>
                     </IonRow>   
-				</IonGrid>
+                </IonGrid>
 
                 <IonToast
                     isOpen={showToast.show}
@@ -222,9 +244,9 @@ const AddCard = () => {
                     duration={2000}
                     onDidDismiss={() => setShowToast({ show: false, message: '' })}
                 />
-			</IonContent>
-		</IonPage>
-	);
+            </IonContent>
+        </IonPage>
+    );
 };
 
 export default AddCard;

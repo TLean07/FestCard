@@ -1,5 +1,5 @@
-import { doc, getDoc, collection, getDocs } from "firebase/firestore";
-import { db } from './firebase-config';
+import { collection, getDocs, addDoc, doc, getDoc } from "firebase/firestore";
+import { db } from './firebase-config'; 
 
 export const getUserProfile = async (userId) => {
   const userRef = doc(db, "users", userId);
@@ -9,6 +9,30 @@ export const getUserProfile = async (userId) => {
   } else {
     console.log("Nenhum documento encontrado!");
     return null;
+  }
+};
+
+export const getUserEvents = async (userId) => {
+  const eventsCollectionRef = collection(db, "users", userId, "events");
+  const querySnapshot = await getDocs(eventsCollectionRef);
+  const events = [];
+  querySnapshot.forEach((doc) => {
+    events.push({ id: doc.id, ...doc.data() });
+  });
+  return events;
+};
+
+export const addUserEvent = async (userId, eventData) => {
+  try {
+    const eventsCollectionRef = collection(db, "users", userId, "events");
+    const docRef = await addDoc(eventsCollectionRef, {
+      ...eventData,
+      createdAt: new Date(), 
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error("Erro ao adicionar evento:", error);
+    throw error; 
   }
 };
 

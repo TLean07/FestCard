@@ -151,3 +151,19 @@ body.dark {
   --ion-toolbar-color: #ffffff;
   --ion-icon-color: #ffff;
 }
+
+.custom-button {
+  --background: var(--main-color) !important;
+  --background-activated: var(--main-color) !important;
+  --background-focused: var(--main-color) !important;
+  --background-hover: var(--main-color) !important;
+  --color: var(--button-text-color) !important;
+}
+
+.swiper-pagination {
+  display: none !important;
+}
+
+.toolbar-avatar {
+  z-index: 1000;
+}

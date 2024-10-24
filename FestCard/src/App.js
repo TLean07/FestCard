@@ -1,6 +1,7 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { homeOutline, ticketOutline, calendarOutline } from 'ionicons/icons';
 
 import Home from './pages/Home';
 import Account from './pages/Account';
@@ -10,16 +11,20 @@ import Registrar from './pages/Registrar';
 import SplashScreen from './components/SplashScreen';
 import SetUsername from './pages/SetUsername';
 import Settings from './pages/Settings';
+import AddTransaction from './pages/AddTransaction';
+import Ticket from './pages/tickets';
+import Event from './pages/event';  
+import PurchaseConfirmation from './pages/PurchaseConfirmation'; 
+import Missions from './pages/Mission';
+import PixDeposit from './pages/PixDeposit';
+import PaymentChoice from './pages/PaymentChoice';
+import NfcTransaction from './pages/NfcTransaction'; 
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils that can be commented out */
 import '@ionic/react/css/padding.css';
 import '@ionic/react/css/float-elements.css';
 import '@ionic/react/css/text-alignment.css';
@@ -29,54 +34,92 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import AddTransaction from './pages/AddTransaction';
 
 const App = () => (
-	<IonApp>
-		<IonReactRouter>
-			<IonRouterOutlet>
-				<Route path="/" exact={true}>
-					<Redirect to="/splash" />
-				</Route>
-				<Route path="/home" exact={true}>
-					<Home />
-				</Route>
-				
-				<Route path="/account" exact={ true }>
-					<Account />
-				</Route>
+  <IonApp>
+    <IonReactRouter>
+      <IonRouterOutlet id="main">
+        <Route path="/" exact={true}>
+          <Redirect to="/splash" />
+        </Route>
+        <Route path="/login" exact={true}>
+          <Login />
+        </Route>
+        <Route path="/splash" exact={true}>
+          <SplashScreen />
+        </Route>
+        <Route path="/registrar" exact={true}>
+          <Registrar />
+        </Route>
+        <Route path="/settings" exact={true}>
+          <Settings />
+        </Route>
+        <Route path="/account" exact={true}>
+          <Account />
+        </Route>
 
-				<Route path="/account/add-card" exact={ true }>
-					<AddCard />
-				</Route>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route path="/home" exact={true}>
+              <Home />
+            </Route>
+            <Route path="/ticket" exact={true}>
+              <Ticket />
+            </Route>
+            <Route path="/events" component={Event}>
+              <Event />
+            </Route>
+            <Route path="/purchase-confirmation" exact={true}>
+              <PurchaseConfirmation />
+            </Route>
+            <Route path="/account/add-card" exact={true}>
+              <AddCard />
+            </Route>
+            <Route path="/add-transaction/:card_id" exact={true}>
+              <AddTransaction />
+            </Route>
+            <Route path="/set-username" exact={true}>
+              <SetUsername />
+            </Route>
 
-				<Route path="/add-transaction/:card_id" exact={ true }>
-					<AddTransaction />
-				</Route>
+            <Route path="/missions/:eventId" exact={true}>
+              <Missions />
+            </Route>
 
-				<Route path="/login" exact={true}>
-					<Login />
-				</Route>
+            <Route path="/pix-deposit/:cardId" exact={true}>
+              <PixDeposit />
+            </Route>
 
-				<Route path="/splash" exact={true}>
-					<SplashScreen />
-				</Route>
+            <Route path="/payment-choice" exact={true}>
+              <PaymentChoice />
+            </Route>
 
-				<Route path="/registrar" exact={true}>
-					<Registrar />
-				</Route>
+            <Route path="/nfc-transaction/:card_id" exact={true}>
+              <NfcTransaction />
+            </Route>
 
-				<Route path="/set-username" exact={true}>
-					<SetUsername	 />
-				</Route>
+          </IonRouterOutlet>
 
-				<Route path="/settings" exact={true}>
-					<Settings	/>
-				</Route>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="home" href="/home">
+              <IonIcon icon={homeOutline} />
+              <IonLabel></IonLabel>
+            </IonTabButton>
 
-			</IonRouterOutlet>
-		</IonReactRouter>
-	</IonApp>
+            <IonTabButton tab="ticket" href="/ticket">
+              <IonIcon icon={ticketOutline} />
+              <IonLabel></IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab="events" href="/events">
+              <IonIcon icon={calendarOutline} />
+              <IonLabel></IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonRouterOutlet>
+    </IonReactRouter>
+  </IonApp>
 );
 
 export default App;

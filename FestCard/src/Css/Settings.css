@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap');
+
+/* Estilo geral da página de configurações */
+.settings-page {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Animação suave ao carregar */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Header estilizado */
+.settings-header {
+  font-family: 'Just Another Hand', cursive;
+  font-size: 48px;
+  color: #EE1F79;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilização das opções de configurações */
+.settings-option {
+  background-color: #f0f0f5;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 18px;
+  color: #333333;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Efeito de hover nas opções */
+.settings-option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.settings-option h4 {
+  font-size: 20px;
+  color: #333333;
+  margin: 0;
+}
+
+.settings-option p {
+  font-size: 16px;
+  color: #8a8a8a;
+}
+
+/* Estilização do toggle */
+.settings-toggle {
+  --background: #EE1F79;
+  --background-checked: #d81a68;
+  --background-hover: #b71657;
+  transform: scale(1.2);
+}
+
+/* Estilização do seletor de idiomas */
+.language-select {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #e0e0e0;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.language-select:focus {
+  outline: none;
+  border-color: #EE1F79;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .settings-page {
+    padding: 1rem;
+  }
+
+  .settings-option {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+  }
+
+  .settings-header {
+    font-size: 36px;
+  }
+}

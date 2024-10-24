@@ -2,6 +2,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel
 import { useState, useEffect } from 'react';
 import { arrowBackOutline } from 'ionicons/icons';
 import './Home.module.css';
+import '../Css/Settings.css';
 
 const Settings = () => {
   const [language, setLanguage] = useState('en');

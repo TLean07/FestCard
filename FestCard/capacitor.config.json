@@ -15,5 +15,13 @@
       "splashImmersive": true
     }
   },
+  "android": {
+    "allowMixedContent": true,
+    "webContentsDebuggingEnabled": true,
+    "permissions": {
+      "NFC": "android.permission.NFC",
+      "BIOMETRIC": "android.permission.USE_BIOMETRIC"
+    }
+  },
   "cordova": {}
 }

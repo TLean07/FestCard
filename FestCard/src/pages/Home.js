@@ -7,6 +7,7 @@ import { searchOutline, settingsOutline } from 'ionicons/icons';
 import './Home.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper.scss';
+import '../Css/Home.css';
 
 const Home = () => {
     const cards = AccountStore.useState(s => s.cards);
@@ -96,6 +97,7 @@ const Home = () => {
                     </Swiper>
                 </IonGrid>
             </IonContent>
+           
         </IonPage>
     );
 };

@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap');
+
+.event-page {
+  padding: 2rem;
+  border-radius: 20px;
+  max-width: 100%;
+  margin: auto;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out;
+}
+
+.event-header {
+  font-family: 'Just Another Hand', cursive;
+  font-size: 48px;
+  color: #EE1F79;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.event-list {
+  list-style: none;
+  padding: 0;
+}
+
+.event-item {
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  font-size: 18px;
+  color: #333333;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.event-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.event-item h2 {
+  font-size: 24px;
+  font-family: 'Just Another Hand', cursive;
+  color: #EE1F79;
+  margin-bottom: 0.5rem;
+}
+
+.event-item p {
+  font-size: 16px;
+  color: #8a8a8a;
+  margin-bottom: 1rem;
+}
+
+.event-button {
+  --background: #EE1F79;
+  font-family: 'Just Another Hand', cursive;
+  padding: 0.08rem 1rem;
+  border-radius: 5px;
+  font-size: 1.0rem;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  display: inline-block;
+  min-width: 120px;
+  text-align: center;
+}
+
+.event-button:hover {
+  background-color: #d81a68;
+}
+
+.event-button:active {
+  background-color: #b71657;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .event-page {
+    padding: 1rem;
+  }
+
+  .event-item {
+    margin: 1rem 0;
+  }
+}
+
+.total-fest {
+  color: #EE1F79;
+}

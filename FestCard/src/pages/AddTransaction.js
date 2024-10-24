@@ -5,6 +5,7 @@ import DebitCard from "../components/DebitCard";
 import { AccountStore, addTransactionToCard } from "../data/AccountStore";
 import { useHistory, useParams } from "react-router";
 import { addOutline, timerOutline, arrowBackOutline } from "ionicons/icons";
+import '../Css/AddTransaction.css';
 
 const AddTransaction = () => {
   const cards = AccountStore.useState((s) => s.cards);
