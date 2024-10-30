@@ -33,9 +33,10 @@
 }
 
 .toolbarAvatarImage {
-
     border-radius: 500px;
     height: 100%;
     width: auto;
+    padding: 0.2rem;
+    object-fit: cover; 
 }
 

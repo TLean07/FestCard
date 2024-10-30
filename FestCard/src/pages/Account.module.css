@@ -8,15 +8,13 @@
 }
 
 .avatar {
-
     border-radius: 500px;
     border: 3px solid var(--ion-color-primary);
     padding: 0.2rem;
-}
-
-.profileDetails {
-
-
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%;
+    object-fit: cover; 
 }
 
 .profileDetails h6,
@@ -29,11 +27,6 @@
 .profileDetails h6 {
 
     color: var(--ion-color-medium);
-}
-
-.cards {
-
-
 }
 
 .smallCard {
