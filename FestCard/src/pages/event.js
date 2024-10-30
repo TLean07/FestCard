@@ -43,6 +43,17 @@ const Event = () => {
     history.push(`/missions/${eventId}`);
   };
 
+  const goToProducts = () => {
+    history.push(`/products`);
+  };
+
+  const goToTicketPage = (event) => {
+    history.push({
+      pathname: '/ticket-page',
+      state: { event }
+    });
+  };
+
   return (
     <IonPage className="event-page">
       <IonHeader>
@@ -61,10 +72,17 @@ const Event = () => {
                   <h2>{event.title}</h2>
                   <p>Data: {event.date ? new Date(event.date.seconds * 1000).toLocaleDateString() : 'Data não disponível'}</p>
                 </IonLabel>
-                {/* Customização direta no IonButton */}
-                <IonButton className="event-button" onClick={() => goToMissions(event.id)}>
-                  Ver Missões
-                </IonButton>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <IonButton className="event-button" onClick={() => goToMissions(event.id)}>
+                    Ver Missões
+                  </IonButton>
+                  <IonButton className="event-button" onClick={goToProducts}>
+                    Ver Produtos
+                  </IonButton>
+                  <IonButton className="event-button" onClick={() => goToTicketPage(event)}>
+                    Ver Ticket
+                  </IonButton>
+                </div>
               </IonItem>
             ))}
           </IonList>

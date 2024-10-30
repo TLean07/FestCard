@@ -1,6 +1,6 @@
 import { Store } from "pullstate";
 import { auth, db } from './firebase-config';
-import { doc, setDoc, getDoc, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection, getDocs, addDoc } from "firebase/firestore";
 
 export const AccountStore = new Store({
     profile: {
@@ -102,14 +102,38 @@ export const updateProfileName = (firstname, surname) => {
     saveUserData();
 };
 
-export const addCardToAccount = (newCard) => {
-    AccountStore.update(s => {
-        s.cards = [
-            ...s.cards,
-            { ...newCard, id: Math.random().toString(36).substr(2, 9) }
-        ];
-    });
-    saveUserData();
+export const addCardToAccount = async (newCard) => {
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+        console.error("User is not authenticated. Cannot add card.");
+        return;
+    }
+
+    try {
+        // Adiciona o novo cartão ao Firestore com um ID gerado automaticamente
+        const cardRef = await addDoc(collection(db, "users", userId, "cards"), {
+            type: newCard.type,
+            color: newCard.color,
+            description: newCard.description,
+            number: newCard.number,
+            balance: newCard.balance || 0,
+            transactions: newCard.transactions || []
+        });
+
+        // Atualiza o estado local com o novo cartão e o ID gerado pelo Firestore
+        AccountStore.update(s => {
+            s.cards = [
+                ...s.cards,
+                { ...newCard, id: cardRef.id }
+            ];
+        });
+
+        // Chama `saveUserData` para persistir qualquer mudança adicional
+        await saveUserData();
+
+    } catch (error) {
+        console.error("Erro ao adicionar cartão no Firestore:", error);
+    }
 };
 
 export const addTransactionToCard = async (newTransaction, cardID) => {

@@ -19,6 +19,8 @@ import Missions from './pages/Mission';
 import PixDeposit from './pages/PixDeposit';
 import PaymentChoice from './pages/PaymentChoice';
 import NfcTransaction from './pages/NfcTransaction'; 
+import ProductPage from './pages/ProductPage';
+import TicketPage from './pages/TicketPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -96,6 +98,14 @@ const App = () => (
 
             <Route path="/nfc-transaction/:card_id" exact={true}>
               <NfcTransaction />
+            </Route>
+
+            <Route path="/products" exact={true}>
+              <ProductPage />
+            </Route>
+
+            <Route path="/ticket-page" exact={true}>
+              <TicketPage />
             </Route>
 
           </IonRouterOutlet>
