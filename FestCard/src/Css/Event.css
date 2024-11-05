@@ -10,10 +10,10 @@
 
 .event-header {
   font-family: 'Just Another Hand', cursive;
-  font-size: 48px;
+  font-size: 300%;
   color: #EE1F79;
-  margin-bottom: 1.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .event-list {

@@ -7,14 +7,14 @@
   
   .ticket-header {
     font-family: 'Just Another Hand', cursive;
-    font-size: 48px;
+    font-size: 300%;
     color: #EE1F79;
-    margin-bottom: 1.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin-bottom: 2rem;
   }
   
   .ticket-card {
-    background-color: #EE1F79;
+    background-color: #EE1F79; 
     color: white;
     width: 80%;
     max-width: 300px;
@@ -27,20 +27,22 @@
     padding-top: 20px;
     padding-bottom: 40px;
     overflow: hidden;
-  }
-  
-  .ticket-card:before, .ticket-card:after {
+    border: none 0px ;
+    z-index: 0;
+}
+
+.ticket-card:before, .ticket-card:after {
     content: '';
     position: absolute;
     width: 30px;
     height: 30px;
-    background-color: #fff;
+    background-color: var(--ion-background-color); 
     top: 50%;
     transform: translateY(-50%);
     border-radius: 50%;
-    z-index: 1;
-  }
-  
+    z-index: 100;
+}
+
   .ticket-card:before {
     left: -15px;
   }

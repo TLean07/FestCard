@@ -9,11 +9,10 @@
 
 .product-header {
   font-family: 'Just Another Hand', cursive;
-  font-size: 48px;
+  font-size: 300%;
   color: #EE1F79;
   text-align: center;
   margin-bottom: 2rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .ticket-card {
@@ -23,7 +22,6 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
-  background-color: white;
 }
 
 .ticket-card img {
@@ -35,8 +33,6 @@
   width: 100%;
   max-width: 400px;
   padding: 1rem;
-  background-color: white;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   margin-top: 1.5rem;
 }
@@ -84,7 +80,6 @@
   --background: #EE1F79;
 }
 
-/* Animação de fade-in */
 @keyframes fadeIn {
   0% { opacity: 0; transform: translateY(20px); }
   100% { opacity: 1; transform: translateY(0); }

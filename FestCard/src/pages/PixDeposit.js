@@ -132,7 +132,7 @@ const PixDeposit = () => {
                         <IonRow className="ion-text-center ion-padding">
                             <IonCol size="12">
                                 <QRCodeCanvas value={generatedQR} size={256} />
-                                <IonText color="primary">Use o QR Code para realizar o pagamento Pix</IonText>
+                                <IonText color="primary"></IonText>
                             </IonCol>
                         </IonRow>
                     )}
